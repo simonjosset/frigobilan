@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Frigobilan · Bilan frigorifique de chambre froide</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Frigobilan">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#081028">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -847,9 +855,23 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
         return Promise.resolve("saved");
       }catch(e){ return Promise.reject(e); }
     }
+    // Application installée sur iPhone/iPad : le téléchargement direct n'y est pas fiable,
+    // on passe par la feuille de partage (« Enregistrer dans Fichiers », AirDrop, Mail…).
+    function share(){
+      var f = new File([text], filename, {type:"application/json"});
+      return navigator.share({files:[f], title:filename}).then(function(){ return "saved"; }, function(e){
+        if(e && e.name === "AbortError"){ var d = new Error("declined"); d.code = "declined"; throw d; }
+        return fallback();
+      });
+    }
+    var standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+    var touch = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     if(window.claude && typeof window.claude.use === "function"){
       return window.claude.use("downloads").then(function(d){ return d ? d.save({filename:filename, data:text}).then(function(){ return "saved"; }) : fallback(); });
     }
+    try{
+      if(standalone && touch && navigator.canShare && navigator.canShare({files:[new File([text], filename, {type:"application/json"})]})) return share();
+    }catch(e){}
     return fallback();
   };
 
@@ -1258,6 +1280,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     if(t === "light") document.documentElement.setAttribute("data-theme","light");
     else document.documentElement.removeAttribute("data-theme");
     $("theme").textContent = t === "light" ? "Passer en thème sombre" : "Passer en thème clair";
+    var tc = document.querySelector('meta[name="theme-color"]'); if(tc) tc.setAttribute("content", t === "light" ? "#F3F5FB" : "#081028");
   }
   var theme = "dark"; try{ theme = localStorage.getItem(TKEY) || "dark"; }catch(e){}
   applyTheme(theme);
@@ -3393,6 +3416,12 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   var lastView = null; try{ lastView = localStorage.getItem("frigobilan-view"); }catch(e){}
   if(lastView && lastView !== "bilan" && window.setView && document.querySelector('.tab[data-view="'+lastView+'"]')) window.setView(lastView);
 })();
+</script>
+<script>
+/* Application installable : fonctionnement hors ligne (ignoré quand le fichier est ouvert en local). */
+if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
 </script>
 </body>
 </html>

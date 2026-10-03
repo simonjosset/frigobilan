@@ -1,0 +1,17 @@
+{
+  "name": "Frigobilan · Bilan frigorifique",
+  "short_name": "Frigobilan",
+  "description": "Bilan frigorifique de chambre froide",
+  "lang": "fr",
+  "id": "./",
+  "start_url": "./frigobilan.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#081028",
+  "theme_color": "#081028",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
