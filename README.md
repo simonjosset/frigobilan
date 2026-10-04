@@ -2,6 +2,8 @@
 
 Bilan frigorifique de chambre froide : une application web en un seul fichier (`frigobilan.html`).
 
+Onglets : Bilan, Visuel, Brassage, Consultation fournisseur, Électricité et **DN rapide** (diamètre des tuyauteries d'eau glacée ou glycolée, repris de l'outil Excel « Hydraulique 80 lignes » : débit = P / (cp × ΔT), puis plus petit DN dont la perte de charge reste sous le seuil, frottement de Blasius).
+
 ## Installer sur iPhone / iPad
 
 L'application est une PWA : une fois hébergée en HTTPS, elle s'installe comme une app et fonctionne hors ligne.

@@ -304,6 +304,36 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   .head h1.hook{font-size:36px}
   #v-bilan .kpi.hero .val{font-size:54px}
 }
+/* DN rapide */
+.dngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:0 22px;align-items:start}
+.dnl .ev-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.dnl .ev-name{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px dashed var(--line);color:var(--ink);font:600 17px var(--font);padding:4px 2px}
+.dnl .ev-name:focus{outline:none;border-bottom-color:var(--accent)}
+.dnl .dnDel{padding:6px 12px}
+.dnres{margin-bottom:16px}
+.dnbig{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#2A1B6B 0%,#0B1739 75%);border:1px solid #4B3A9E;border-radius:12px;padding:16px 20px;margin-bottom:12px}
+.dnbig::after{content:"";position:absolute;z-index:-1;right:-60px;top:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,194,255,.35),transparent)}
+.dnbig div{display:flex;align-items:baseline;gap:8px}
+.dnbig small{font-size:18px;font-weight:600;color:var(--muted)}
+.dnbig b{font-size:56px;font-weight:700;line-height:1;letter-spacing:-.03em}
+.dnbig span{color:var(--muted);font-size:14px;font-weight:500}
+:root[data-theme="light"] .dnbig{background:linear-gradient(135deg,#EFE3FF 0%,#FFFFFF 75%);border-color:#D7C2FF}
+.dnkv{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:12px}
+.dnkv div{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.dnkv span{display:block;font-size:12px;color:var(--faint)}
+.dnkv b{font-size:15px;font-weight:600}
+.dnkv b.bad,.dnalt .bad{color:var(--red)}
+.dnalt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px}
+.dnalt th{text-align:left;font-weight:500;color:var(--faint);padding:4px 8px}
+.dnalt td{padding:6px 8px;border-top:1px solid var(--line)}
+.dnalt tr.me td{background:rgba(203,60,255,.12);font-weight:600}
+.dnalt .ok{color:var(--green)}
+.dnprops{font-size:12px;color:var(--faint);margin:4px 0 0}
+.dnmsg{color:var(--muted);font-size:14px;margin:0;padding:12px 14px;border:1px dashed var(--line);border-radius:8px}
+.dnwarn{color:var(--red);border-color:var(--red)}
+.dnwarns{list-style:none;margin:8px 0 0;padding:0}
+.dnwarns li{border-left:3px solid var(--yellow);background:var(--field);border-radius:0 8px 8px 0;padding:8px 12px;margin-top:6px;font-size:13px}
+@media (max-width:860px){.dngrid{grid-template-columns:1fr}.dnbig b{font-size:48px}}
 /* Téléphone : onglets en bas, bandeau des chambres collant, saisie sans zoom */
 .f .pm{display:none}
 @media (max-width:860px){
@@ -375,6 +405,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="brassage" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/></svg>Brassage</button>
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Consultation</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Électricité</button>
+      <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN rapide</button>
     </div>
     <p class="navlab" id="navlab">Sections</p>
     <ul class="nav" id="nav">
@@ -398,6 +429,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="brassage" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/></svg>Brassage</button>
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Devis</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Élec</button>
+      <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN</button>
     </div>
     <div class="roombar" id="roomBar"></div>
     <div id="v-bilan">
@@ -621,6 +653,29 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
         <div class="iso-wrap" id="eSch"></div>
       </section>
       <section class="card"><h2>Liaisons</h2><div id="eOut"></div></section>
+    </div>
+    <div id="v-dn" hidden>
+      <div class="head">
+        <div>
+          <h1>DN rapide</h1>
+          <p>Diamètre des tuyauteries d'eau glacée ou glycolée. Pour chaque ligne, on retient le plus petit DN dont la perte de charge reste sous le seuil, selon la méthode de l'outil Hydraulique (logiciel TA).</p>
+        </div>
+        <div class="btns">
+          <button class="b-ghost" type="button" id="dnReset">Réinitialiser</button>
+          <button class="b-main" type="button" id="dnAdd">+ Ajouter une ligne</button>
+        </div>
+      </div>
+      <section class="card">
+        <h2>Réseau</h2>
+        <p class="hint">Communs à toutes les lignes. Les propriétés du fluide sont prises à la température moyenne de chaque ligne.</p>
+        <div class="row">
+          <div><label for="dnFluid">Fluide</label><div class="f"><select id="dnFluid"></select></div></div>
+          <div><label for="dnTube">Type de tuyauterie</label><div class="f"><select id="dnTube"></select></div></div>
+          <div><label for="dnPdc">Perte de charge maxi</label><div class="f"><input id="dnPdc" inputmode="decimal"><span class="u">mmCE/m</span></div></div>
+          <div><label for="dnMaj">Majoration HMT</label><div class="f"><input id="dnMaj" inputmode="decimal"><span class="u">%</span></div></div>
+        </div>
+      </section>
+      <div class="dngrid" id="dnLines"></div>
     </div>
 
     <div id="v-brassage" hidden>
@@ -1225,7 +1280,8 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("v-brassage").hidden = v !== "brassage";
     $("v-consult").hidden = v !== "consult";
     $("v-elec").hidden = v !== "elec";
-    $("roomBar").hidden = v === "consult";
+    $("v-dn").hidden = v !== "dn";
+    $("roomBar").hidden = v === "consult" || v === "dn";
     try{ localStorage.setItem("frigobilan-view", v); }catch(e){}
     if(window.brassageOnShow) window.brassageOnShow(v === "brassage");
     if(window.consultOnShow) window.consultOnShow(v === "consult");
@@ -3478,6 +3534,152 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   names(); roomBar();
   var lastView = null; try{ lastView = localStorage.getItem("frigobilan-view"); }catch(e){}
   if(lastView && lastView !== "bilan" && window.setView && document.querySelector('.tab[data-view="'+lastView+'"]')) window.setView(lastView);
+})();
+</script>
+<script>
+/* ---------- DN rapide : diamètre des tuyauteries d'eau glacée ou glycolée ----------
+   Reprise de l'outil Excel « Hydraulique 80 lignes » (fonctions Diammm, vitessems, pdcmm) :
+   débit = P / (cp × ΔT), puis on parcourt les tubes du plus petit au plus gros et on retient
+   le premier dont la perte de charge linéaire est sous le seuil. Frottement : 64/Re en laminaire,
+   Blasius au-delà, majoré de 8 % au-dessus de Re = 100 000 (calage sur les valeurs TA). */
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  // Propriétés des fluides : [T °C, cp kJ/kg·K, conductivité W/m·K, viscosité cinématique cSt, masse volumique kg/m³]
+  var FLUIDS = [
+    {n:"Eau", g:0, d:[[0,4.22,0.555,1.789,1000],[10,4.2015,0.5765,1.398,999],[20,4.183,0.598,1.007,998],[30,4.1805,0.6125,0.8325,995],[40,4.178,0.627,0.658,992],[50,4.1845,0.639,0.568,988],[60,4.191,0.651,0.478,983],[70,4.195,0.66,0.422,977.7],[80,4.199,0.669,0.366,971.6],[90,4.2075,0.6755,0.33,965.1],[100,4.216,0.682,0.294,958.1]]},
+    {n:"MPG 40 %", g:-23, d:[[-20,3.61,0.414,44.3,1053],[-10,3.64,0.416,22.3,1051],[0,3.67,0.417,12.4,1048],[10,3.7,0.418,7.5,1043],[20,3.72,0.419,4.9,1038],[30,3.75,0.419,3.3,1033],[40,3.78,0.42,2.4,1026],[50,3.81,0.421,1.8,1020],[60,3.83,0.422,1.4,1013],[70,3.86,0.423,1.2,1005],[80,3.89,0.426,1,998],[90,3.92,0.428,0.8,990],[100,3.95,0.432,0.7,982]]},
+    {n:"MPG 35 %", g:-18, d:[[-10,3.74,0.431,16.9,1046],[0,3.76,0.434,9.8,1043],[10,3.78,0.437,6.1,1039],[20,3.81,0.439,4,1034],[30,3.83,0.441,2.8,1029],[40,3.85,0.444,2.1,1023],[50,3.88,0.446,1.6,1016],[60,3.9,0.449,1.3,1010],[70,3.93,0.452,1,1002],[80,3.95,0.455,0.9,995],[90,3.97,0.459,0.7,987],[100,4,0.464,0.7,979]]},
+    {n:"MPG 30 %", g:-13, d:[[-10,3.83,0.446,12.8,1039],[0,3.85,0.451,7.7,1037],[10,3.87,0.456,4.9,1033],[20,3.89,0.46,3.3,1029],[30,3.91,0.465,2.4,1024],[40,3.93,0.469,1.8,1018],[50,3.94,0.473,1.4,1012],[60,3.96,0.477,1.1,1005],[70,3.98,0.481,0.9,998],[80,4,0.486,0.8,991],[90,4.02,0.491,0.7,983],[100,4.04,0.497,0.6,975]]},
+    {n:"MPG 25 %", g:-10, d:[[-10,3.92,0.462,9.7,1032],[0,3.93,0.469,6,1031],[10,3.95,0.476,3.9,1028],[20,3.96,0.483,2.8,1025],[30,3.98,0.489,2,1019],[40,3.99,0.495,1.5,1014],[50,4.01,0.501,1.2,1008],[60,4.02,0.506,1,1001],[70,4.04,0.512,0.8,994],[80,4.05,0.517,0.7,987],[90,4.07,0.523,0.6,979],[100,4.09,0.53,0.5,972]]},
+    {n:"MPG 20 %", g:-7, d:[[0,4,0.489,4.7,1025],[10,4.01,0.497,3.2,1023],[20,4.03,0.506,2.3,1019],[30,4.04,0.514,1.7,1015],[40,4.05,0.522,1.3,1010],[50,4.06,0.529,1,1004],[60,4.07,0.536,0.9,998],[70,4.08,0.543,0.7,991],[80,4.1,0.549,0.6,984],[90,4.11,0.556,0.5,977],[100,4.12,0.563,0.5,969]]},
+    {n:"MEG 40 %", g:-27, d:[[-20,3.42,0.445,19.2,1072],[-10,3.45,0.446,11.1,1070],[0,3.47,0.446,7,1067],[10,3.5,0.445,4.6,1063],[20,3.53,0.444,3.3,1059],[30,3.55,0.442,2.4,1054],[40,3.58,0.441,1.9,1048],[50,3.6,0.439,1.5,1043],[60,3.63,0.438,1.2,1037],[70,3.66,0.438,1,1030],[80,3.68,0.439,0.9,1024],[90,3.71,0.441,0.8,1017],[100,3.74,0.444,0.7,1011]]},
+    {n:"MEG 35 %", g:-21, d:[[-20,3.53,0.456,15.5,1062],[-10,3.56,0.459,9.2,1061],[0,3.58,0.46,5.9,1058],[10,3.6,0.461,4,1055],[20,3.62,0.462,2.8,1051],[30,3.65,0.462,2.1,1046],[40,3.67,0.462,1.6,1041],[50,3.69,0.462,1.3,1036],[60,3.72,0.463,1.1,1030],[70,3.74,0.464,0.9,1024],[80,3.76,0.465,0.8,1018],[90,3.79,0.468,0.7,1012],[100,3.81,0.472,0.6,1005]]},
+    {n:"MEG 30 %", g:-16, d:[[-10,3.66,0.472,7.6,1052],[0,3.68,0.476,4.9,1050],[10,3.7,0.479,3.4,1047],[20,3.72,0.481,2.5,1043],[30,3.74,0.483,1.9,1039],[40,3.76,0.485,1.5,1035],[50,3.78,0.487,1.2,1029],[60,3.8,0.489,1,1023],[70,3.82,0.491,0.8,1017],[80,3.84,0.494,0.7,1011],[90,3.86,0.498,0.6,1004],[100,3.88,0.502,0.6,998]]},
+    {n:"MEG 25 %", g:-13, d:[[-10,3.77,0.486,6.3,1044],[0,3.79,0.492,4.2,1043],[10,3.8,0.497,2.9,1040],[20,3.82,0.501,2.1,1037],[30,3.84,0.506,1.6,1033],[40,3.85,0.509,1.3,1028],[50,3.87,0.513,1,1023],[60,3.89,0.516,0.9,1017],[70,3.9,0.52,0.7,1012],[80,3.92,0.524,0.6,1005],[90,3.94,0.529,0.6,999],[100,3.96,0.534,0.5,993]]},
+    {n:"MEG 20 %", g:-9, d:[[-10,3.87,0.5,5.2,1034],[0,3.89,0.508,3.5,1033],[10,3.9,0.516,2.5,1031],[20,3.91,0.523,1.8,1028],[30,3.93,0.529,1.4,1024],[40,3.94,0.535,1.1,1020],[50,3.96,0.54,0.9,1015],[60,3.97,0.545,0.8,1010],[70,3.98,0.55,0.7,1004],[80,4,0.555,0.6,998],[90,4.01,0.561,0.5,991],[100,4.02,0.566,0.5,985]]},
+    {n:"Alcali 23,6 %", g:-50, d:[[-40,4.32,0.36,13.3,937],[-30,4.29,0.378,7.8,934],[-20,4.27,0.396,4.8,930],[-10,4.255,0.413,3.29,926],[0,4.235,0.431,2.37,921],[10,4.23,0.446,1.8,916],[20,4.22,0.486,1.41,911]]},
+    {n:"Alcali 19,5 %", g:-35, d:[[-30,4.29,0.395,7.4,943],[-20,4.265,0.412,4.5,940],[-10,4.25,0.43,3.1,937],[0,4.23,0.448,2.24,933],[10,4.22,0.485,1.68,929],[20,4.21,0.483,1.32,925]]},
+    {n:"Alcali 17,7 %", g:-30, d:[[-30,4.285,0.403,7.3,946],[-20,4.265,0.421,4.4,944],[-10,4.245,0.438,3.03,942],[0,4.225,0.455,2.21,939],[10,4.215,0.473,1.85,935],[20,4.205,0.491,1.28,931]]},
+    {n:"Alcali 13,4 %", g:-20, d:[[-20,4.26,0.442,4.24,955],[-10,4.24,0.459,2.9,954],[0,4.22,0.477,2.09,952],[10,4.21,0.495,1.56,949],[20,4.2,0.513,1.23,946]]},
+    {n:"Greenway Neo 40 %", g:-17, d:[[-10,3.62,0.429,15.1,1042],[0,3.65,0.44,8.3,1037],[10,3.68,0.451,5.1,1032],[20,3.7,0.461,3.2,1030],[30,3.73,0.471,2.2,1026],[40,3.76,0.481,1.6,1023],[50,3.78,0.489,1.3,1020],[60,3.8,0.497,1.1,1017],[70,3.82,0.504,0.8,1014],[80,3.84,0.51,0.7,1011],[90,3.87,0.515,0.6,1007],[100,3.89,0.519,0.5,1004]]}
+  ];
+  // Tubes : diamètre extérieur (mm), DN, longueur équivalente d'un coude 90° (m) et épaisseurs par type (null : non fabriqué)
+  var EXT = [10.2,13.5,17.2,21.3,26.9,33.7,42.4,48.3,60.3,76.1,88.9,114.3,139.7,168.3,219.1,273,323.9,355.6,406.4];
+  var DN = [6,8,10,15,20,25,32,40,50,65,80,100,125,150,200,250,300,350,400];
+  var COUDE = [0.4,0.4,0.42,0.48,0.61,0.79,1,1.2,1.5,1.8,2.3,3,4,4.9,6.1,7.7,9.1,10.4,11.6];
+  var TUBES = [
+    {n:"Inox NF A 49-147", maj:0, ep:[0.8,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,2,2,2,2,2,3,3]},
+    {n:"Acier NF EN 10216-1 (T10)", maj:0.1, ep:[2.3,2.3,2.3,2.6,2.3,2.3,2.6,2.6,2.9,2.9,3.2,3.6,4,4.5,6.3,6.3,6.3,8,8.8]},
+    {n:"Acier NF EN 10216-1 (T3)", maj:0.1, ep:[2.3,2.3,2.3,2.6,2.6,3.2,3.2,3.2,3.6,3.6,4,4.5,4.5,null,null,null,null,null,null]}
+  ];
+  var DEF = {fluid:0, tube:0, pdc:"50", maj:"10", lines:[{name:"Ligne 1", P:"40", Ta:"7", Tr:"12", L:"", c90:"", c45:""}]};
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  var S = Store.get("dn");
+  if(!S || !Array.isArray(S.lines) || !S.lines.length) S = clone(DEF);
+  if(!FLUIDS[S.fluid]) S.fluid = 0;
+  if(!TUBES[S.tube]) S.tube = 0;
+  function save(){ Store.set("dn", S); }
+  function num(v){ var n = parseFloat(String(v == null ? "" : v).replace(",", ".").replace("−", "-")); return isFinite(n) ? n : NaN; }
+  function fr(x, d){ return x.toLocaleString("fr-FR", {minimumFractionDigits:d, maximumFractionDigits:d}); }
+  function neg(t){ return t.replace(/^-/, "−"); }
+  function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+  // Interpolation linéaire dans le tableau du fluide (bornée aux températures connues)
+  function props(fl, T){
+    var d = fl.d, lo = d[0], hi = d[d.length - 1], out = T < lo[0] || T > hi[0];
+    if(T <= lo[0]) return {cp:lo[1], nu:lo[3], rho:lo[4], out:out};
+    if(T >= hi[0]) return {cp:hi[1], nu:hi[3], rho:hi[4], out:out};
+    for(var i = 1; i < d.length; i++) if(T <= d[i][0]){
+      var a = d[i-1], b = d[i], k = (T - a[0]) / (b[0] - a[0]);
+      return {cp:a[1] + k*(b[1]-a[1]), nu:a[3] + k*(b[3]-a[3]), rho:a[4] + k*(b[4]-a[4]), out:false};
+    }
+  }
+  function pipe(i, ep, Q, nu, maj){
+    var D = (EXT[i] - 2*ep) / 1000, surf = 3.14159*D*D/4, v = Q/3600/surf, Re = v*D/(nu/1e6);
+    var lam = Re <= 2000 ? 64/Re : 0.316/Math.pow(Re, 0.25) * (Re >= 100000 ? 1.08 : 1);
+    return {i:i, dn:DN[i], ext:EXT[i], ep:ep, surf:surf, v:v, Re:Re, pdc:lam/D * v*v/(2*9.81) * 1000 * (1 + maj)};
+  }
+  function calc(l){
+    var fl = FLUIDS[S.fluid], ty = TUBES[S.tube], P = num(l.P), Ta = num(l.Ta), Tr = num(l.Tr), max = num(S.pdc);
+    if(!(P > 0) || !isFinite(Ta) || !isFinite(Tr)) return {empty:true};
+    var dT = Math.abs(Tr - Ta);
+    if(!(dT > 0)) return {err:"Les températures aller et retour doivent être différentes."};
+    if(!(max > 0)) return {err:"Indiquez une perte de charge maxi."};
+    var Tm = (Ta + Tr) / 2, pr = props(fl, Tm), Q = P / (pr.cp * dT) * 3600 / pr.rho;
+    var rows = [];
+    ty.ep.forEach(function(ep, i){ if(ep != null) rows.push(pipe(i, ep, Q, pr.nu, ty.maj)); });
+    var k = 0; while(k < rows.length - 1 && !(rows[k].pdc < max)) k++;
+    var r = rows[k], L = num(l.L), c90 = num(l.c90) || 0, c45 = num(l.c45) || 0, hmt = 1 + (num(S.maj) || 0)/100;
+    return {Tm:Tm, pr:pr, Q:Q, rows:rows, k:k, r:r, over:!(r.pdc < max), tmin:Math.min(Ta, Tr), gel:fl.g,
+      line: L > 0 ? (r.pdc*L/1000 + r.pdc/1000*(c90 + c45/2)*COUDE[r.i]) * hmt : null,
+      vol: L > 0 ? r.surf * L * 1000 : null};
+  }
+
+  function lineHTML(l, i){
+    function fld(k, lab, u, mode){
+      return '<div><label for="dn'+k+i+'">'+lab+'</label><div class="f"><input id="dn'+k+i+'" data-k="'+k+'" inputmode="'+(mode || "decimal")+'" value="'+esc(l[k] == null ? "" : l[k])+'"><span class="u">'+u+'</span></div></div>';
+    }
+    return '<section class="card dnl" data-i="'+i+'">'+
+      '<div class="ev-h"><input class="ev-name" data-k="name" value="'+esc(l.name || "")+'" aria-label="Nom de la ligne">'+
+      (S.lines.length > 1 ? '<button type="button" class="b-ghost dnDel" aria-label="Supprimer la ligne">×</button>' : '')+'</div>'+
+      '<div class="dnres" id="dnRes'+i+'"></div>'+
+      '<div class="row">'+fld("P","Puissance","kW")+fld("Ta","Température aller","°C")+fld("Tr","Température retour","°C")+
+      fld("L","Longueur aller + retour","ml")+fld("c90","Coudes 90°","nb","numeric")+fld("c45","Coudes 45°","nb","numeric")+'</div>'+
+      '</section>';
+  }
+  function resHTML(c){
+    if(c.empty) return '<p class="dnmsg">Saisissez la puissance et les températures aller et retour.</p>';
+    if(c.err) return '<p class="dnmsg dnwarn">'+c.err+'</p>';
+    var r = c.r, h = '<div class="dnbig"><div><small>DN</small><b>'+r.dn+'</b></div><span>Ø '+fr(r.ext,1)+' × '+fr(r.ep,1)+' mm</span></div>';
+    h += '<div class="dnkv"><div><span>Débit</span><b>'+fr(c.Q,2)+' m³/h</b></div><div><span>Vitesse</span><b>'+fr(r.v,2)+' m/s</b></div>'+
+      '<div><span>Perte de charge</span><b'+(c.over ? ' class="bad"' : '')+'>'+fr(r.pdc,1)+' mmCE/m</b></div>'+
+      (c.line != null ? '<div><span>Perte de charge ligne</span><b>'+fr(c.line,2)+' mCE</b></div><div><span>Volume de fluide</span><b>'+fr(c.vol,1)+' l</b></div>' : '')+'</div>';
+    var alt = c.rows.slice(Math.max(0, c.k - 1), c.k + 2);
+    h += '<table class="dnalt"><tr><th>DN</th><th>Vitesse</th><th>Pdc</th></tr>'+alt.map(function(a){
+      var me = a === r, ok = a.pdc < num(S.pdc);
+      return '<tr'+(me ? ' class="me"' : '')+'><td>DN '+a.dn+'</td><td>'+fr(a.v,2)+' m/s</td><td class="'+(ok ? 'ok' : 'bad')+'">'+fr(a.pdc,1)+' mmCE/m</td></tr>';
+    }).join("")+'</table>';
+    var w = [];
+    if(c.over) w.push("Même le plus gros tube disponible dépasse la perte de charge maxi.");
+    if(c.tmin <= c.gel) w.push("Température de "+neg(c.tmin.toLocaleString("fr-FR", {maximumFractionDigits:1}))+" °C au niveau ou sous le point de congélation du fluide ("+neg(String(c.gel))+" °C).");
+    if(c.pr.out) w.push("Température moyenne hors des données du fluide : propriétés prises à la limite du tableau.");
+    h += '<p class="dnprops">À '+neg(fr(c.Tm,1))+' °C : cp '+fr(c.pr.cp,2)+' kJ/kg·K · ρ '+fr(c.pr.rho,0)+' kg/m³ · ν '+fr(c.pr.nu,2)+' cSt · Re '+fr(r.Re,0)+'</p>';
+    if(w.length) h += '<ul class="dnwarns">'+w.map(function(t){ return '<li>'+t+'</li>'; }).join("")+'</ul>';
+    return h;
+  }
+  function update(i){ var el = $("dnRes"+i); if(el) el.innerHTML = resHTML(calc(S.lines[i])); }
+  function updateAll(){ S.lines.forEach(function(l, i){ update(i); }); }
+  function renderLines(){ $("dnLines").innerHTML = S.lines.map(lineHTML).join(""); updateAll(); }
+  function renderGlobal(){
+    $("dnFluid").innerHTML = FLUIDS.map(function(f, i){ return '<option value="'+i+'"'+(i == S.fluid ? ' selected' : '')+'>'+f.n+' (gel '+neg(String(f.g))+' °C)</option>'; }).join("");
+    $("dnTube").innerHTML = TUBES.map(function(t, i){ return '<option value="'+i+'"'+(i == S.tube ? ' selected' : '')+'>'+t.n+'</option>'; }).join("");
+    $("dnPdc").value = S.pdc; $("dnMaj").value = S.maj;
+  }
+
+  $("dnFluid").addEventListener("change", function(){ S.fluid = +this.value; save(); updateAll(); });
+  $("dnTube").addEventListener("change", function(){ S.tube = +this.value; save(); updateAll(); });
+  $("dnPdc").addEventListener("input", function(){ S.pdc = this.value; save(); updateAll(); });
+  $("dnMaj").addEventListener("input", function(){ S.maj = this.value; save(); updateAll(); });
+  $("dnLines").addEventListener("input", function(e){
+    var k = e.target.getAttribute("data-k"), card = e.target.closest(".dnl"); if(!k || !card) return;
+    var i = +card.getAttribute("data-i"); S.lines[i][k] = e.target.value; save(); if(k !== "name") update(i);
+  });
+  $("dnLines").addEventListener("click", function(e){
+    if(!e.target.closest(".dnDel")) return;
+    var i = +e.target.closest(".dnl").getAttribute("data-i"), n = S.lines[i].name || "cette ligne";
+    UI.confirm("Supprimer « "+n+" » ?", "Supprimer").then(function(ok){ if(!ok) return; S.lines.splice(i, 1); save(); renderLines(); });
+  });
+  $("dnAdd").addEventListener("click", function(){
+    var last = S.lines[S.lines.length - 1] || DEF.lines[0];
+    S.lines.push({name:"Ligne "+(S.lines.length + 1), P:"", Ta:last.Ta, Tr:last.Tr, L:"", c90:"", c45:""});
+    save(); renderLines();
+    var inp = $("dnP"+(S.lines.length - 1)); if(inp){ inp.scrollIntoView({behavior:"smooth", block:"center"}); inp.focus({preventScroll:true}); }
+  });
+  $("dnReset").addEventListener("click", function(){
+    UI.confirm("Remettre DN rapide à zéro ? Les lignes saisies seront effacées.", "Réinitialiser").then(function(ok){ if(!ok) return; S = clone(DEF); save(); renderGlobal(); renderLines(); });
+  });
+  renderGlobal(); renderLines();
+  window.dnCalc = function(l){ return calc(l); };
 })();
 </script>
 <script>
