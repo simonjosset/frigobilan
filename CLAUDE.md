@@ -5,7 +5,10 @@ Outil web d'aide à l'étude pour frigoristes, en français, livré en **un seul
 ## Organisation
 
 - `src/frigobilan.html` : l'application (HTML, CSS et un bloc `<script>` par onglet). **C'est ici qu'on modifie l'app.**
-- `src/stations/` : modules ES purs (sans DOM), testés avec `node --test`, intégrés au HTML par le build à l'emplacement `<script data-inline="…"></script>`. `model.js` = stations de vannes (données, migration, nomenclature, CSV), exposé dans la page sous `window.FBStations`.
+- `src/stations/` : modules ES purs (sans DOM), testés avec `node --test`, intégrés au HTML par le build à l'emplacement `<script data-inline="…"></script>`. Stations de vannes, exposées dans la page sous `window.FBStations` :
+  - `model.js` : données, migration, nomenclature, CSV ;
+  - `layout.js` : implantation (position de chaque composant, tubes, coudes, tés), source unique pour le 2D, le 3D et les métrés ;
+  - `schema2d.js` : schéma de principe en SVG (texte), symboles dans le style du schéma de référence.
 - `tools/build.mjs` : assemble le fichier unique → `dist/frigobilan.html` (à télécharger) et `frigobilan.html` à la racine (servi par GitHub Pages, ne pas modifier à la main).
 - `tools/smoke.mjs` : test de bout en bout Playwright (format iPhone, hors ligne) sur `dist/frigobilan.html`.
 - `sw.js`, `manifest.webmanifest`, `icons/`, `index.html` : app installable et hors ligne.

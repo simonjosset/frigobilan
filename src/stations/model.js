@@ -5,6 +5,8 @@
    Une station équipe un évaporateur (repéré par son identifiant stable `evapId`).
    Elle est enregistrée dans le projet : project.stations = [station, …]. */
 
+import { layout } from "./layout.js";
+
 export const VERSION = 1;
 export const DN_LIST = [15, 20, 25, 32, 40, 50, 65, 80, 100];
 export const ORIENTATIONS = { droite: "Départs à droite", gauche: "Départs à gauche" };
@@ -106,7 +108,7 @@ function defaults(code) {
   var m = MODELES["glycol-tor"];
   return {
     v: VERSION, id: "", code: code || "ST1", evapId: null, type: "glycol-tor",
-    dn: 32, antenne: 1, derivation: 0.5, orientation: "droite",
+    dn: 32, antenne: 2.5, derivation: 0.5, orientation: "droite",
     isolation: { on: true, ep: 19 },
     reseaux: { A: "Réseau A (régulé)", B: "Réseau B (TOR)" },
     options: Object.assign({}, m.options),
@@ -237,16 +239,17 @@ export function designation(c) {
 
 function round2(x) { return Math.round(x * 100) / 100; }
 
-/* Lignes chiffrables d'une station : un composant par ligne, puis tuyauterie et calorifuge.
-   Tuyauterie estimée : 2 antennes (entrée et sortie batterie) + 2 dérivations (départs du réseau B), 2 coudes 90°. */
+/* Lignes chiffrables d'une station : un composant par ligne, puis tuyauterie, raccords et calorifuge.
+   Métrés tirés de l'implantation (layout.js), la même que celle du schéma 2D et du modèle 3D. */
 export function stationRows(station) {
   var rows = station.composants.map(function (c) {
     return { rep: c.rep, des: designation(c), dn: c.dn, qte: 1, unite: "u", act: ACTIONNEURS[c.act] || "", role: c.role, key: c.key };
   });
-  var ml = round2(2 * station.antenne + 2 * station.derivation);
-  if (ml > 0) rows.push({ rep: "", des: "Tube acier", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Antennes et dérivations", key: "TUBE" });
-  rows.push({ rep: "", des: "Coude 90°", dn: station.dn, qte: 2, unite: "u", act: "", role: "Dérivations du réseau B", key: "COUDE" });
-  if (station.isolation.on && ml > 0) rows.push({ rep: "", des: "Calorifuge élastomère ép. " + station.isolation.ep + " mm", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Isolation de la tuyauterie", key: "CALO" });
+  var g = layout(station), ml = round2(g.tube);
+  rows.push({ rep: "", des: "Tube acier", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Antennes et dérivations", key: "TUBE" });
+  rows.push({ rep: "", des: "Coude 90°", dn: station.dn, qte: g.coudes.length, unite: "u", act: "", role: "Dérivations du réseau B", key: "COUDE" });
+  rows.push({ rep: "", des: "Té égal", dn: station.dn, qte: g.tes.length, unite: "u", act: "", role: "Départ de la dérivation du réseau B", key: "TE" });
+  if (station.isolation.on) rows.push({ rep: "", des: "Calorifuge élastomère ép. " + station.isolation.ep + " mm", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Isolation de la tuyauterie", key: "CALO" });
   return rows;
 }
 

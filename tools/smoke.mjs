@@ -71,6 +71,16 @@ check("station restituée après export puis import", reimported === created);
 const evs = await page.evaluate(() => { const p = JSON.parse(localStorage.getItem("frigobilan-store-v2")); return FBStations.listEvaporators(p.projects[p.current]).length; });
 check("évaporateur de la station retrouvé", evs === 1);
 
+// 4. Schéma 2D : XML valide pour le navigateur, affiché avec ses 13 composants
+const svgInfo = await page.evaluate(() => {
+  const s = (Store.get("stations") || [])[0], svg = FBStations.schemaSVG(s);
+  const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+  const box = document.createElement("div"); box.innerHTML = svg; document.body.appendChild(box);
+  const r = { xml: !doc.querySelector("parsererror"), comps: box.querySelectorAll("g.c").length, w: Math.round(box.querySelector("svg").getBoundingClientRect().width) };
+  box.remove(); return r;
+});
+check("schéma 2D : XML valide et 13 composants affichés", svgInfo.xml && svgInfo.comps === 13, JSON.stringify(svgInfo));
+
 check("aucune erreur JavaScript", errors.length === 0, errors.join(" | "));
 await browser.close(); server.close();
 console.log(failed ? failed + " échec(s)" : "Tous les contrôles sont passés.");

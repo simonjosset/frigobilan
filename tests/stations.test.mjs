@@ -118,15 +118,17 @@ test("export puis import JSON : la station est restituée à l'identique", () =>
   assert.deepEqual(back.rooms, p.rooms);
 });
 
-test("nomenclature d'une station : composants, tube, coudes et calorifuge", () => {
+test("nomenclature d'une station : composants, tube, coudes, té et calorifuge", () => {
   const s = M.createStation({ stations: [] }, "e1", ids());
-  M.setStation(s, { dn: 32, antenne: 1.2, derivation: 0.4, isolation: { on: true, ep: 13 } });
+  M.setStation(s, { dn: 32, antenne: 3, derivation: 0.4, isolation: { on: true, ep: 13 } });
   const rows = M.stationRows(s);
   assert.equal(rows.filter(r => r.unite === "u" && r.rep).length, 13);
   const tube = rows.find(r => r.key === "TUBE"), calo = rows.find(r => r.key === "CALO");
-  assert.equal(tube.qte, 3.2); assert.equal(tube.unite, "ml");
-  assert.equal(calo.des, "Calorifuge élastomère ép. 13 mm"); assert.equal(calo.qte, 3.2);
+  // 2 lignes de 3 m + 2 montées de 0,4 m + dérivation haute (3 − 0,924) + dérivation basse (3 − 1,54)
+  assert.equal(tube.qte, 10.34); assert.equal(tube.unite, "ml");
+  assert.equal(calo.des, "Calorifuge élastomère ép. 13 mm"); assert.equal(calo.qte, 10.34);
   assert.equal(rows.find(r => r.key === "COUDE").qte, 2);
+  assert.equal(rows.find(r => r.key === "TE").qte, 1);
   M.setStation(s, { isolation: { on: false } });
   assert.ok(!M.stationRows(s).some(r => r.key === "CALO"));
 });
@@ -142,7 +144,7 @@ test("nomenclature du projet : regroupement par désignation et DN", () => {
   assert.match(iso32.rep, /^ST1-V/); assert.match(iso50.rep, /^ST2-V/);
   const purges = rows.find(r => r.des === "Vanne de purge / vidange");
   assert.equal(purges.dn, 15); assert.equal(purges.qte, 6);
-  assert.equal(rows.find(r => r.des === "Tube acier" && r.dn === 32).qte, 3);
+  assert.equal(rows.find(r => r.des === "Tube acier" && r.dn === 32).qte, 8.54);
   assert.equal(a.code, "ST1"); assert.equal(b.code, "ST2");
 });
 
