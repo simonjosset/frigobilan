@@ -12,10 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Frigobilan">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#081028">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style data-inline="fonts"></style>
 <style>
 :root{
   box-sizing:border-box;
@@ -334,6 +331,52 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
 .dnwarns{list-style:none;margin:8px 0 0;padding:0}
 .dnwarns li{border-left:3px solid var(--yellow);background:var(--field);border-radius:0 8px 8px 0;padding:8px 12px;margin-top:6px;font-size:13px}
 @media (max-width:860px){.dngrid{grid-template-columns:1fr}.dnbig b{font-size:48px}}
+/* Stations de vannes */
+.stbar{display:flex;gap:8px;overflow-x:auto;margin:0 0 18px;padding-bottom:4px}
+.stchip{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 12px;font:600 14px var(--font);cursor:pointer;text-align:left}
+.stchip small{font-weight:500;font-size:12px;color:var(--faint)}
+.stchip[aria-selected="true"]{background:rgba(203,60,255,.16);border-color:var(--accent);color:var(--ink)}
+.stchip .warn-dot{color:var(--yellow)}
+.stgrid{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"v3 p" "v2 p" "n p" "np p";gap:0 22px;align-items:start}
+.st-a3{grid-area:v3}.st-a2{grid-area:v2}.st-ap{grid-area:p}.st-an{grid-area:n}.st-anp{grid-area:np}
+.st-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.st-h h2{margin:0}
+.sttools{display:flex;gap:6px;flex-wrap:wrap}
+.sttools .tg{padding:7px 11px;font-size:13px}
+.sttools .tg:hover{color:var(--ink);border-color:var(--accent)}
+.st3d{position:relative;height:440px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--field);touch-action:none}
+.st3d canvas{display:block}
+.st3d-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0;padding:20px;text-align:center;color:var(--muted);font-size:14px}
+.st-help{font-size:12px;color:var(--faint);margin:8px 0}
+.stlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-bottom:10px}
+.stlegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.stinfo{border-top:1px solid var(--line);padding:12px 0 10px}
+.stinfo .none{color:var(--faint);font-size:13px;margin:0}
+.stinfo h3{margin:0 0 4px;font-size:16px}
+.stinfo h3 b{color:var(--accent)}
+.stinfo .meta{color:var(--muted);font-size:13px;margin:0 0 10px}
+.stinfo .row{margin-bottom:8px}
+.st2d{overflow-x:auto;border-radius:10px;border:1px solid var(--line);background:var(--card);margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.st2d svg{display:block;width:100%;height:auto}
+.st2d.zoom svg{width:auto;min-width:900px}
+.st2d .c{cursor:pointer}
+.stopts{display:flex;flex-direction:column;gap:8px;margin:4px 0 8px}
+.stopts label{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink);font-weight:500}
+.stopts input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.sttable{overflow-x:auto;margin-bottom:12px}
+.sttable table{width:100%;border-collapse:collapse;font-size:13px}
+.sttable th{text-align:left;font-weight:500;color:var(--faint);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sttable td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.sttable td.n{text-align:right;white-space:nowrap}
+.sttable td.rep{font-weight:600;white-space:nowrap}
+.sttable td.dn{white-space:nowrap}
+.sttable tr[data-key]{cursor:pointer}
+.sttable tr[data-key]:hover td{background:var(--card2)}
+.sttable tr.hl td{background:rgba(203,60,255,.14)}
+.sttable tr.hl td.rep{color:var(--accent)}
+@media (max-width:1180px){.stgrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"v3" "v2" "p" "n" "np"}}
+@media (max-width:860px){.st3d{height:330px}}
+@media (max-width:600px){.sttable .act{display:none}}
 /* Téléphone : onglets en bas, bandeau des chambres collant, saisie sans zoom */
 .f .pm{display:none}
 @media (max-width:860px){
@@ -406,6 +449,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Consultation</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Électricité</button>
       <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN rapide</button>
+      <button class="tab" role="tab" data-view="stations" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9v8l9-4zM21 9v8l-9-4z"/><path d="M12 13V6M8.5 6h7"/></svg>Stations de vannes</button>
     </div>
     <p class="navlab" id="navlab">Sections</p>
     <ul class="nav" id="nav">
@@ -430,6 +474,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Devis</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Élec</button>
       <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN</button>
+      <button class="tab" role="tab" data-view="stations" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9v8l9-4zM21 9v8l-9-4z"/><path d="M12 13V6M8.5 6h7"/></svg>Vannes</button>
     </div>
     <div class="roombar" id="roomBar"></div>
     <div id="v-bilan">
@@ -676,6 +721,78 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
         </div>
       </section>
       <div class="dngrid" id="dnLines"></div>
+    </div>
+    <div id="v-stations" hidden>
+      <div class="head">
+        <div>
+          <h1>Stations de vannes</h1>
+          <p>La station de vannes de chaque évaporateur : composition, schéma de principe, modèle 3D à manipuler et nomenclature à chiffrer.</p>
+        </div>
+        <div class="btns">
+          <button class="b-ghost" type="button" id="stPrint">Imprimer la fiche</button>
+          <button class="b-main" type="button" id="stNew">+ Nouvelle station</button>
+        </div>
+      </div>
+      <div class="stbar" id="stBar" role="tablist" aria-label="Stations du projet"></div>
+      <section class="card" id="stEmpty" hidden>
+        <h2>Aucune station pour l'instant</h2>
+        <p class="hint" id="stEmptyHint">Choisissez l'évaporateur à équiper : la station « eau glycolée TOR » est créée avec la composition du schéma de principe, modifiable ensuite.</p>
+        <div class="row">
+          <div><label for="stEmptyEvap">Évaporateur</label><div class="f"><select id="stEmptyEvap"></select></div></div>
+        </div>
+        <div class="btns" style="margin-bottom:12px"><button class="b-main" type="button" id="stCreate">Créer la station</button><button class="b-ghost" type="button" data-view="brassage">Gérer les évaporateurs (Brassage)</button></div>
+      </section>
+      <div class="stgrid" id="stMain" hidden>
+        <section class="card st-a3" aria-labelledby="st3dTitle">
+          <div class="st-h"><h2 id="st3dTitle">Modèle 3D</h2>
+            <div class="sttools" role="toolbar" aria-label="Vues du modèle 3D">
+              <button type="button" class="tg" data-v3="face">Face</button><button type="button" class="tg" data-v3="dessus">Dessus</button><button type="button" class="tg" data-v3="iso">Iso</button><button type="button" class="tg" data-v3="reset" aria-label="Recentrer le modèle">Reset</button><button type="button" class="tg" data-png="3d" aria-label="Enregistrer le modèle 3D en image PNG">PNG</button>
+            </div>
+          </div>
+          <div class="st3d" id="st3d"><p class="st3d-msg" id="st3dMsg">Chargement du modèle 3D…</p></div>
+          <p class="st-help">Un doigt ou clic gauche : tourner · pincer ou molette : zoomer · deux doigts ou clic droit : déplacer · touchez un composant pour l'identifier.</p>
+          <div class="stlegend" id="stLegend"></div>
+          <div class="stinfo" id="stInfo" aria-live="polite"></div>
+        </section>
+        <section class="card st-a2" aria-labelledby="st2dTitle">
+          <div class="st-h"><h2 id="st2dTitle">Schéma de principe</h2>
+            <div class="sttools"><button type="button" class="tg" id="st2dZoom" aria-pressed="false">Agrandir</button><button type="button" class="tg" data-png="2d" aria-label="Enregistrer le schéma en image PNG">PNG</button></div>
+          </div>
+          <div class="st2d" id="st2d"></div>
+        </section>
+        <section class="card st-ap" aria-labelledby="stParTitle">
+          <h2 id="stParTitle">Paramètres</h2>
+          <div class="row">
+            <div><label for="stEvap">Évaporateur</label><div class="f"><select id="stEvap"></select></div></div>
+            <div><label for="stType">Type de station</label><div class="f"><select id="stType"><option value="glycol-tor">Eau glycolée · TOR</option><option disabled>CO₂ détente directe (à venir)</option><option disabled>CO₂ pompé (à venir)</option></select></div></div>
+            <div><label for="stCode">Code de la station</label><div class="f"><input id="stCode" type="text" maxlength="12" autocomplete="off"></div></div>
+            <div><label for="stDN">DN de la station</label><div class="f"><select id="stDN"></select></div></div>
+            <div><label for="stAnt">Longueur des antennes</label><div class="f"><input id="stAnt" inputmode="decimal"><span class="u">m</span></div></div>
+            <div><label for="stDer">Écart des dérivations</label><div class="f"><input id="stDer" inputmode="decimal"><span class="u">m</span></div></div>
+            <div><label for="stOri">Orientation</label><div class="f"><select id="stOri"><option value="droite">Départs à droite</option><option value="gauche">Départs à gauche</option></select></div></div>
+            <div><label for="stEp">Calorifuge</label><div class="f"><input id="stEp" inputmode="decimal"><span class="u">mm</span></div></div>
+            <div><label for="stNetA">Réseau A (retour régulé)</label><div class="f"><input id="stNetA" type="text" maxlength="40"></div></div>
+            <div><label for="stNetB">Réseau B (retour TOR)</label><div class="f"><input id="stNetB" type="text" maxlength="40"></div></div>
+          </div>
+          <p class="hint" id="stAntHint" hidden></p>
+          <div class="stopts" id="stOpts"></div>
+          <div class="btns" style="margin:6px 0 12px"><button class="b-ghost" type="button" id="stDup">Dupliquer</button><button class="b-ghost" type="button" id="stDel">Supprimer la station</button></div>
+        </section>
+        <section class="card st-an" aria-labelledby="stNomTitle">
+          <div class="st-h"><h2 id="stNomTitle">Nomenclature de la station</h2>
+            <div class="sttools"><button type="button" class="tg" id="stCopy">Copier</button><button type="button" class="tg" id="stCsv">CSV</button></div>
+          </div>
+          <div class="sttable" id="stNomen"></div>
+        </section>
+        <section class="card st-anp" aria-labelledby="stNomPTitle">
+          <div class="st-h"><h2 id="stNomPTitle">Nomenclature du projet</h2>
+            <div class="sttools"><button type="button" class="tg" id="stCopyP">Copier</button><button type="button" class="tg" id="stCsvP">CSV</button></div>
+          </div>
+          <p class="hint">Toutes les stations du projet, lignes identiques regroupées.</p>
+          <div class="sttable" id="stNomenP"></div>
+        </section>
+      </div>
+      <p class="copied" id="stMsg" aria-live="polite"></p>
     </div>
 
     <div id="v-brassage" hidden>
@@ -1284,11 +1401,13 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("v-consult").hidden = v !== "consult";
     $("v-elec").hidden = v !== "elec";
     $("v-dn").hidden = v !== "dn";
-    $("roomBar").hidden = v === "consult" || v === "dn";
+    $("v-stations").hidden = v !== "stations";
+    $("roomBar").hidden = v === "consult" || v === "dn" || v === "stations";
     try{ localStorage.setItem("frigobilan-view", v); }catch(e){}
     if(window.brassageOnShow) window.brassageOnShow(v === "brassage");
     if(window.consultOnShow) window.consultOnShow(v === "consult");
     if(window.elecOnShow) window.elecOnShow(v === "elec");
+    if(window.stationsOnShow) window.stationsOnShow(v === "stations");
     $("nav").hidden = v !== "bilan"; $("navlab").hidden = v !== "bilan";
     if(v === "visuel") render();
     Array.prototype.slice.call(document.querySelectorAll('.tab[data-view]')).forEach(function(t){ t.setAttribute("aria-selected", t.getAttribute("data-view") === v ? "true" : "false"); });
@@ -2537,6 +2656,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   $("cellPlace").addEventListener("click", function(){ autoPlace(); fillCells(); update(); });
 
   window.brassageIso = function(o){ o = o || {}; return Room.iso({pal:o.pal || "screen", mode:"cut", dims:!!o.dims, extra:isoExtra}); };
+  window.brassageSave = save;
   window.getBrassage = function(){ return {S:S, k:G(), poly:poly(G()), evGeo:evGeo, subJets:subJets, snapDoor:snapDoor, cellList:cellList}; };
   window.brassageOnShow = function(on){
     visible = on;
@@ -3684,6 +3804,301 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   });
   renderGlobal(); renderLines();
   window.dnCalc = function(l){ return calc(l); };
+})();
+</script>
+<script data-inline="stations3d"></script>
+<script>
+/* ---------- Stations de vannes : une station par évaporateur ----------
+   Données et nomenclature : window.FBStations (src/stations/model.js) ; schéma : schema2d.js ;
+   3D : window.FBStations3D, chargé à la première ouverture de l'onglet. */
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var F = window.FBStations, CUR_KEY = "frigobilan-station-cur";
+  var ST = Store.get("stations"); if(!Array.isArray(ST)){ ST = []; }
+  var cur = null, sel = null, hover = null, viewer = null, viewerTried = false, shown = false;
+  try{ cur = localStorage.getItem(CUR_KEY); }catch(e){}
+  function esc(t){ return String(t == null ? "" : t).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function fr(x){ return typeof x === "number" ? String(x).replace(".", ",") : esc(x); }
+  function save(){ Store.set("stations", ST); }
+  function station(){ return ST.filter(function(s){ return s.id === cur; })[0] || null; }
+  function setCur(id){ cur = id; sel = null; try{ localStorage.setItem(CUR_KEY, id || ""); }catch(e){} }
+  function msg(t){ var m = $("stMsg"); m.textContent = t; setTimeout(function(){ if(m.textContent === t) m.textContent = ""; }, 3500); }
+  function dark(){ return document.documentElement.getAttribute("data-theme") !== "light"; }
+  function reduced(){ return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+  /* ---------- Évaporateurs du projet (onglet Brassage), y compris ceux de la chambre ouverte ---------- */
+  function project(){
+    var curRoom = Store.roomId(), live = window.getBrassage ? window.getBrassage().S.evaps : null;
+    return {rooms:Store.rooms().map(function(r){
+      var d = Store.roomData(r.id) || {id:r.id, name:r.name};
+      if(r.id === curRoom && live) d = Object.assign({}, d, {brassage:Object.assign({}, d.brassage, {evaps:live})});
+      return d;
+    }), stations:ST};
+  }
+  function evaps(){ return F.listEvaporators(project()); }
+  function evapLabel(id){ var e = evaps().filter(function(x){ return x.id === id; })[0]; return e ? e.label : null; }
+  // L'évaporateur de la chambre ouverte peut n'exister que dans l'onglet Brassage : on l'enregistre
+  function persistEvap(id){
+    var b = Store.get("brassage");
+    if((!b || !Array.isArray(b.evaps) || !b.evaps.some(function(e){ return e.id === id; })) && window.brassageSave) window.brassageSave();
+  }
+  function evapOptions(selected, withNone){
+    var list = evaps(), used = {};
+    ST.forEach(function(s){ if(s.evapId && s.id !== cur) used[s.evapId] = s.code; });
+    var h = withNone ? '<option value="">— Sans évaporateur —</option>' : '';
+    h += list.map(function(e){ return '<option value="'+esc(e.id)+'"'+(e.id === selected ? ' selected' : '')+'>'+esc(e.label)+(used[e.id] ? ' (déjà équipé : '+esc(used[e.id])+')' : '')+'</option>'; }).join("");
+    if(selected && !list.some(function(e){ return e.id === selected; })) h += '<option value="'+esc(selected)+'" selected>Évaporateur supprimé</option>';
+    return h;
+  }
+
+  /* ---------- Rendu ---------- */
+  function renderBar(){
+    $("stBar").innerHTML = ST.map(function(s){
+      var lab = evapLabel(s.evapId);
+      return '<button type="button" class="stchip" role="tab" data-st="'+esc(s.id)+'" aria-selected="'+(s.id === cur)+'">'+esc(s.code)+
+        '<small>'+(lab ? esc(lab) : '<span class="warn-dot">●</span> Sans évaporateur')+' · DN '+s.dn+'</small></button>';
+    }).join("");
+  }
+  function renderEmpty(){
+    var list = evaps();
+    $("stEmptyEvap").innerHTML = evapOptions(null, !list.length);
+    $("stEmptyHint").textContent = list.length ? "Choisissez l'évaporateur à équiper : la station « eau glycolée TOR » est créée avec la composition du schéma de principe, modifiable ensuite."
+      : "Aucun évaporateur dans le projet : ajoutez-en dans l'onglet Brassage, ou créez une station sans évaporateur et rattachez-la plus tard.";
+  }
+  function renderParams(s){
+    $("stEvap").innerHTML = evapOptions(s.evapId, true);
+    $("stCode").value = s.code; $("stType").value = s.type;
+    $("stDN").innerHTML = F.DN_LIST.map(function(d){ return '<option value="'+d+'"'+(d === s.dn ? ' selected' : '')+'>DN '+d+'</option>'; }).join("");
+    $("stAnt").value = fr(s.antenne); $("stDer").value = fr(s.derivation); $("stOri").value = s.orientation;
+    $("stEp").value = s.isolation.on ? fr(s.isolation.ep) : "";
+    $("stEp").placeholder = "sans";
+    $("stNetA").value = s.reseaux.A; $("stNetB").value = s.reseaux.B;
+    $("stOpts").innerHTML = '<label><input type="checkbox" data-opt="calo"'+(s.isolation.on ? ' checked' : '')+'>Tuyauterie calorifugée</label>'+
+      Object.keys(F.OPTIONS).map(function(k){ return '<label><input type="checkbox" data-opt="'+k+'"'+(s.options[k] ? ' checked' : '')+'>'+esc(F.OPTIONS[k])+'</label>'; }).join("");
+    hintAntenne(s);
+  }
+  function hintAntenne(s){
+    var g = F.layout(s), h = $("stAntHint");
+    h.hidden = !g.allonge;
+    if(g.allonge) h.textContent = "Antennes portées à "+fr(g.L)+" m pour loger les composants en DN "+s.dn+" (le métré en tient compte).";
+  }
+  function palette(){
+    var css = getComputedStyle(document.documentElement);
+    var p = Object.assign({}, dark() ? F.PALETTE_SOMBRE : F.PALETTE_CLAIRE);
+    p.bg = css.getPropertyValue("--card").trim() || p.bg;
+    return p;
+  }
+  function render2D(s){ $("st2d").innerHTML = F.schemaSVG(s, {palette:palette()}); markHL(); }
+  function table(rows, cols, keyed){
+    return '<table><thead><tr>'+cols.map(function(c){ return '<th class="'+c[0]+'">'+c[1]+'</th>'; }).join("")+'</tr></thead><tbody>'+rows.map(function(r){
+      return '<tr'+(keyed && r.rep ? ' data-key="'+esc(r.key)+'" tabindex="0"' : '')+'>'+cols.map(function(c){
+        var v = c[0] === "dn" ? "DN "+r.dn : c[0] === "qte" ? fr(r.qte)+" "+r.unite : r[c[0]];
+        return '<td class="'+(c[0] === "qte" ? "n" : c[0])+'">'+(c[0] === "qte" ? v : esc(v))+'</td>';
+      }).join("")+'</tr>';
+    }).join("")+'</tbody></table>';
+  }
+  var COLS = [["rep","Repère"],["des","Désignation"],["dn","DN"],["act","Actionneur"],["qte","Qté"]];
+  var COLSP = [["des","Désignation"],["dn","DN"],["qte","Qté"],["rep","Repères"]];
+  function renderNomen(s){
+    $("stNomen").innerHTML = table(F.stationRows(s), COLS, true);
+    $("stNomenP").innerHTML = ST.length ? table(F.projectRows({stations:ST}), COLSP, false) : "";
+    markHL();
+  }
+  function renderLegend(){
+    if(!window.FBStations3D) return;
+    var C = FBStations3D.COULEURS;
+    $("stLegend").innerHTML = FBStations3D.LEGENDE.map(function(l){ return '<span><i style="background:#'+C[l[0]].toString(16).padStart(6,"0")+'"></i>'+esc(l[1])+'</span>'; }).join("");
+  }
+  function renderInfo(s){
+    var key = hover || sel, c = s && key ? s.composants.filter(function(x){ return x.key === key; })[0] : null;
+    if(!c){ $("stInfo").innerHTML = '<p class="none">Touchez un composant dans le modèle 3D, le schéma ou la nomenclature pour l\'identifier et le régler.</p>'; return; }
+    var acts = F.ACTIONNEURS, custom = c.custom || {};
+    var h = '<h3><b>'+esc(c.rep)+'</b> · '+esc(F.designation(c))+'</h3><p class="meta">DN '+c.dn+' · '+esc(acts[c.act] || "Sans actionneur")+' · '+esc(c.role)+'</p>';
+    if(key === sel){
+      h += '<div class="row">'+
+        '<div><label for="stcRep">Repère</label><div class="f"><input id="stcRep" type="text" maxlength="16" value="'+esc(c.rep)+'"></div></div>'+
+        '<div><label for="stcDN">DN</label><div class="f"><select id="stcDN"><option value="">Auto</option>'+F.DN_LIST.map(function(d){ return '<option value="'+d+'"'+(custom.dn && d === c.dn ? ' selected' : '')+'>DN '+d+'</option>'; }).join("")+'</select></div></div>'+
+        (c.act ? '<div><label for="stcAct">Actionneur</label><div class="f"><select id="stcAct"><option value="">Auto</option>'+Object.keys(acts).map(function(a){ return '<option value="'+a+'"'+(custom.act && a === c.act ? ' selected' : '')+'>'+acts[a]+'</option>'; }).join("")+'</select></div></div>' : '')+
+        '</div>'+((custom.dn || custom.rep || custom.act) ? '<button type="button" class="tg" id="stcReset">Revenir aux valeurs automatiques</button>' : '');
+    }
+    $("stInfo").innerHTML = h;
+  }
+  /* Surbrillance commune au 3D, au schéma et à la nomenclature */
+  function markHL(){
+    var k = hover || sel;
+    Array.prototype.forEach.call(document.querySelectorAll("#st2d g.c"), function(g){ g.classList.toggle("hl", g.getAttribute("data-key") === k); });
+    Array.prototype.forEach.call(document.querySelectorAll("#stNomen tr[data-key]"), function(t){ t.classList.toggle("hl", t.getAttribute("data-key") === k); });
+  }
+  function select(key, from){
+    sel = key || null; hover = null; markHL(); renderInfo(station());
+    if(viewer && from !== "3d") viewer.highlight(sel);
+  }
+  function theme3d(){ var css = getComputedStyle(document.documentElement); return {bg:dark() ? "#0E1C45" : "#EEF1F8", edge:dark() ? 0xffffff : 0x1b2340, accent:css.getPropertyValue("--accent").trim() || "#CB3CFF"}; }
+  function render(refit){
+    var s = station();
+    if(!s && ST.length){ setCur(ST[0].id); s = station(); }
+    renderBar();
+    $("stEmpty").hidden = !!s; $("stMain").hidden = !s;
+    $("stPrint").disabled = !s;
+    if(!s){ renderEmpty(); return; }
+    renderParams(s); render2D(s); renderNomen(s); renderInfo(s);
+    if(viewer){ viewer.setStation(s, Object.assign(theme3d(), {refit:refit})); viewer.highlight(sel); }
+  }
+  // Après une modification : tout sauf le formulaire (pour garder le champ en cours de saisie)
+  function refresh(s){ save(); renderBar(); render2D(s); renderNomen(s); renderInfo(s); hintAntenne(s); if(viewer){ viewer.setStation(s, theme3d()); viewer.highlight(sel); } }
+
+  /* ---------- 3D (chargé à la demande) ---------- */
+  function load3D(){
+    if(window.FBStations3D) return true;
+    var src = document.getElementById("lazy-FBStations3D"); if(!src) return false;
+    try{ var el = document.createElement("script"); el.textContent = src.textContent; document.head.appendChild(el); }catch(e){}
+    return !!window.FBStations3D;
+  }
+  function init3D(){
+    if(viewerTried) return; viewerTried = true;
+    var box = $("st3d"), m = $("st3dMsg");
+    if(!load3D()){ m.textContent = "Le module 3D n'a pas pu être chargé."; return; }
+    if(!FBStations3D.supported()){ m.textContent = "La 3D n'est pas disponible sur cet appareil (WebGL désactivé). Le schéma et la nomenclature restent utilisables."; return; }
+    try{
+      viewer = FBStations3D.createViewer(box, {reducedMotion:reduced(), onPick:function(k){ select(k, "3d"); },
+        onHover:function(k){ hover = k; markHL(); renderInfo(station()); }});
+      m.hidden = true; renderLegend();
+    }catch(e){ viewer = null; m.textContent = "La 3D n'a pas pu démarrer sur cet appareil."; }
+  }
+  // Accès pour les tests de bout en bout
+  window.FBStationsUI = {viewer:function(){ return viewer; }, select:function(k){ select(k); }};
+  window.stationsOnShow = function(on){
+    shown = on; if(!on) return;
+    ST = Store.get("stations") || ST;
+    render(true);
+    // La 3D démarre quand sa zone est visible (une station existe)
+    if(!$("stMain").hidden && !viewerTried){ init3D(); if(viewer) render(true); }
+    if(viewer) viewer.resize();
+  };
+
+  /* ---------- Fichiers : PNG, CSV, presse-papiers ---------- */
+  function saveBlob(name, blob){
+    var standalone = navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+    try{
+      var file = new File([blob], name, {type:blob.type});
+      if(standalone && navigator.canShare && navigator.canShare({files:[file]})) return navigator.share({files:[file], title:name}).then(function(){ msg("« "+name+" » partagé."); }, function(){});
+    }catch(e){}
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+    msg("« "+name+" » enregistré.");
+  }
+  function dataURLBlob(u){ var b = atob(u.split(",")[1]), a = new Uint8Array(b.length); for(var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return new Blob([a], {type:"image/png"}); }
+  function svgPNG(s, cb){
+    var svg = F.schemaSVG(s), w = +svg.match(/width="([\d.]+)"/)[1], h = +svg.match(/height="([\d.]+)"/)[1], img = new Image();
+    img.onload = function(){ var c = document.createElement("canvas"), k = 2; c.width = Math.round(w*k); c.height = Math.round(h*k); var x = c.getContext("2d"); x.scale(k,k); x.drawImage(img, 0, 0, w, h); c.toBlob(cb, "image/png"); };
+    img.onerror = function(){ msg("L'image du schéma n'a pas pu être créée."); };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+  function slug(t){ return (String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "projet").slice(0, 40); }
+  function copy(text){
+    function done(){ msg("Nomenclature copiée : collez-la dans votre tableur."); }
+    if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(done, fallback);
+    fallback();
+    function fallback(){ var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(e){ msg("Copie impossible sur cet appareil : utilisez l'export CSV."); } t.remove(); }
+  }
+
+  /* ---------- Impression de la fiche ---------- */
+  function printSheet(){
+    var s = station(); if(!s) return;
+    var lab = evapLabel(s.evapId), g = F.layout(s), img = viewer ? viewer.toPNG() : null;
+    var h = '<h1>Station de vannes '+esc(s.code)+'</h1><table class="meta"><tr><td>Projet</td><td>'+esc(Store.name())+'</td></tr>'+
+      '<tr><td>Évaporateur</td><td>'+esc(lab || "non rattaché")+'</td></tr><tr><td>Type</td><td>Eau glycolée · TOR</td></tr>'+
+      '<tr><td>DN</td><td>DN '+s.dn+'</td></tr><tr><td>Antennes</td><td>'+fr(g.L)+' m · dérivations '+fr(g.rise)+' m</td></tr>'+
+      '<tr><td>Calorifuge</td><td>'+(s.isolation.on ? "élastomère "+fr(s.isolation.ep)+" mm" : "sans")+'</td></tr>'+
+      '<tr><td>Réseaux</td><td>A : '+esc(s.reseaux.A)+' · B : '+esc(s.reseaux.B)+'</td></tr></table>';
+    h += '<h2>Schéma de principe</h2><div class="plan">'+F.schemaSVG(s)+'</div>';
+    if(img) h += '<h2>Modèle 3D</h2><div class="plan"><img src="'+img+'" alt="Modèle 3D de la station" style="width:100%;max-height:90mm;object-fit:contain"></div>';
+    h += '<h2>Nomenclature</h2><table><tr><th>Repère</th><th>Désignation</th><th>DN</th><th>Actionneur</th><th class="n">Qté</th></tr>'+
+      F.stationRows(s).map(function(r){ return '<tr><td>'+esc(r.rep)+'</td><td>'+esc(r.des)+'</td><td>DN '+r.dn+'</td><td>'+esc(r.act)+'</td><td class="n">'+fr(r.qte)+' '+r.unite+'</td></tr>'; }).join("")+'</table>';
+    h += '<p class="small">Frigobilan · schéma de principe, sans échelle. Métrés estimés d\'après la longueur des antennes.</p>';
+    $("note").innerHTML = h; window.__consultPrint = true; window.print(); setTimeout(function(){ window.__consultPrint = false; }, 500);
+  }
+
+  /* ---------- Événements ---------- */
+  function create(evapId){
+    if(evapId) persistEvap(evapId);
+    var p = {stations:ST}, s = F.addStation(p, evapId || null);
+    ST = p.stations; setCur(s.id); save(); render(true);
+    if(!viewerTried){ init3D(); if(viewer) render(true); }
+    msg("Station "+s.code+" créée.");
+  }
+  $("stCreate").addEventListener("click", function(){ create($("stEmptyEvap").value); });
+  $("stNew").addEventListener("click", function(){
+    var used = {}; ST.forEach(function(s){ if(s.evapId) used[s.evapId] = 1; });
+    var free = evaps().filter(function(e){ return !used[e.id]; })[0];
+    create(free ? free.id : null);
+  });
+  $("stBar").addEventListener("click", function(e){ var b = e.target.closest("[data-st]"); if(b){ setCur(b.getAttribute("data-st")); render(true); } });
+  $("stEvap").addEventListener("change", function(){ var s = station(); if(this.value) persistEvap(this.value); F.setStation(s, {evapId:this.value || null}); refresh(s); });
+  $("stDN").addEventListener("change", function(){ var s = station(); F.setStation(s, {dn:+this.value}); refresh(s); });
+  $("stOri").addEventListener("change", function(){ var s = station(); F.setStation(s, {orientation:this.value}); refresh(s); if(viewer) viewer.reset(); });
+  $("stCode").addEventListener("change", function(){ var s = station(); F.setStation(s, {code:this.value}); this.value = s.code; refresh(s); });
+  [["stAnt","antenne"],["stDer","derivation"]].forEach(function(f){
+    $(f[0]).addEventListener("input", function(){ var s = station(), p = {}; if(this.value.trim() === "") return; p[f[1]] = this.value; F.setStation(s, p); refresh(s); });
+  });
+  $("stEp").addEventListener("input", function(){ var s = station(), v = this.value.trim(); F.setStation(s, {isolation:v === "" ? {on:false} : {on:true, ep:v}}); refresh(s); var c = document.querySelector('[data-opt="calo"]'); if(c) c.checked = s.isolation.on; });
+  [["stNetA","A"],["stNetB","B"]].forEach(function(f){
+    $(f[0]).addEventListener("input", function(){ var s = station(), p = {}; if(!this.value.trim()) return; p[f[1]] = this.value; F.setStation(s, {reseaux:p}); refresh(s); });
+  });
+  $("stOpts").addEventListener("change", function(e){
+    var k = e.target.getAttribute("data-opt"), s = station(); if(!k) return;
+    if(k === "calo"){ F.setStation(s, {isolation:{on:e.target.checked}}); $("stEp").value = s.isolation.on ? fr(s.isolation.ep) : ""; }
+    else { var o = {}; o[k] = e.target.checked; F.setStation(s, {options:o}); if(sel && !s.composants.some(function(c){ return c.key === sel; })) sel = null; }
+    refresh(s);
+  });
+  $("stDup").addEventListener("click", function(){
+    var s = station(), p = {stations:ST}, d = F.addStation(p, null);
+    var keep = JSON.parse(JSON.stringify(s)); keep.id = d.id; keep.code = d.code; keep.evapId = null;
+    keep.composants.forEach(function(c){ if(c.custom && c.custom.rep) c.custom.rep = false; });
+    ST[ST.length - 1] = F.normalizeStation(keep, d.code); setCur(d.id); save(); render(true);
+    msg("Station dupliquée en "+d.code+" : choisissez son évaporateur.");
+  });
+  $("stDel").addEventListener("click", function(){
+    var s = station();
+    UI.confirm("Supprimer la station "+s.code+" ? Sa nomenclature sera retirée du projet.", "Supprimer").then(function(ok){
+      if(!ok) return; ST = ST.filter(function(x){ return x.id !== s.id; }); setCur(ST.length ? ST[0].id : null); save(); render(true);
+    });
+  });
+  // Sélection depuis le schéma et la nomenclature
+  function pickFrom(e, selector){ var g = e.target.closest(selector); if(g) select(g.getAttribute("data-key")); }
+  $("st2d").addEventListener("click", function(e){ pickFrom(e, "g.c"); });
+  $("stNomen").addEventListener("click", function(e){ pickFrom(e, "tr[data-key]"); });
+  ["st2d","stNomen"].forEach(function(id){ $(id).addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ var g = e.target.closest("[data-key]"); if(g){ e.preventDefault(); select(g.getAttribute("data-key")); } } }); });
+  // Réglage du composant sélectionné
+  $("stInfo").addEventListener("change", function(e){
+    var s = station(); if(!s || !sel) return;
+    if(e.target.id === "stcRep") F.setComponent(s, sel, {rep:e.target.value.trim() || null});
+    if(e.target.id === "stcDN") F.setComponent(s, sel, {dn:e.target.value ? +e.target.value : null});
+    if(e.target.id === "stcAct") F.setComponent(s, sel, {act:e.target.value || null});
+    refresh(s);
+  });
+  $("stInfo").addEventListener("click", function(e){ if(e.target.id === "stcReset"){ var s = station(); F.setComponent(s, sel, {rep:null, dn:null, act:null}); refresh(s); } });
+  // Vues 3D et exports
+  document.querySelector(".st-a3 .sttools").addEventListener("click", function(e){
+    var b = e.target.closest("[data-v3]"); if(!b || !viewer) return;
+    var v = b.getAttribute("data-v3"); if(v === "reset") viewer.reset(); else viewer.view(v);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#v-stations [data-png]"), function(b){
+    b.addEventListener("click", function(){
+      var s = station(); if(!s) return;
+      if(b.getAttribute("data-png") === "3d"){ if(!viewer){ msg("La 3D n'est pas disponible."); return; } saveBlob("station-"+slug(s.code)+"-3d.png", dataURLBlob(viewer.toPNG())); }
+      else svgPNG(s, function(blob){ if(blob) saveBlob("station-"+slug(s.code)+"-schema.png", blob); });
+    });
+  });
+  $("stCopy").addEventListener("click", function(){ var s = station(); if(s) copy(F.toTSV(F.stationRows(s), F.STATION_COLS)); });
+  $("stCopyP").addEventListener("click", function(){ copy(F.toTSV(F.projectRows({stations:ST}), F.PROJECT_COLS)); });
+  $("stCsv").addEventListener("click", function(){ var s = station(); if(s) saveBlob("nomenclature-"+slug(s.code)+".csv", new Blob([F.toCSV(F.stationRows(s), F.STATION_COLS)], {type:"text/csv;charset=utf-8"})); });
+  $("stCsvP").addEventListener("click", function(){ saveBlob("nomenclature-stations-"+slug(Store.name())+".csv", new Blob([F.toCSV(F.projectRows({stations:ST}), F.PROJECT_COLS)], {type:"text/csv;charset=utf-8"})); });
+  $("stPrint").addEventListener("click", printSheet);
+  $("st2dZoom").addEventListener("click", function(){ var z = $("st2d").classList.toggle("zoom"); this.setAttribute("aria-pressed", z); this.textContent = z ? "Réduire" : "Agrandir"; });
+  // Thème clair / sombre : schéma et 3D redessinés
+  new MutationObserver(function(){ if(shown) render(false); }).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
+  render(true);
 })();
 </script>
 <script>

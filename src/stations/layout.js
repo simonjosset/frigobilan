@@ -12,6 +12,9 @@
 
 export const ECART_LIGNES = 0.6;   // m entre la ligne de sortie et la ligne d'entrée
 
+/* Diamètre extérieur des tubes acier (mm) par DN */
+export const DEXT = { 15: 21.3, 20: 26.9, 25: 33.7, 32: 42.4, 40: 48.3, 50: 60.3, 65: 76.1, 80: 88.9, 100: 114.3 };
+
 /* Pas entre deux composants, selon le DN (encombrement d'une vanne et de ses raccords) */
 export function pitch(dn) { return Math.round((0.18 + 0.004 * dn) * 1000) / 1000; }
 

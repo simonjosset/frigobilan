@@ -2,7 +2,7 @@
 
 Bilan frigorifique de chambre froide : une application web en un seul fichier (`frigobilan.html`).
 
-Onglets : Bilan, Visuel, Brassage, Consultation fournisseur, Électricité et **DN rapide** (diamètre des tuyauteries d'eau glacée ou glycolée, repris de l'outil Excel « Hydraulique 80 lignes » : débit = P / (cp × ΔT), puis plus petit DN dont la perte de charge reste sous le seuil, frottement de Blasius).
+Onglets : Bilan, Visuel, Brassage, Consultation fournisseur, Électricité, **Stations de vannes** (station eau glycolée TOR par évaporateur : schéma de principe, modèle 3D manipulable au doigt, nomenclature en CSV) et **DN rapide** (diamètre des tuyauteries d'eau glacée ou glycolée, repris de l'outil Excel « Hydraulique 80 lignes » : débit = P / (cp × ΔT), puis plus petit DN dont la perte de charge reste sous le seuil, frottement de Blasius).
 
 ## Installer sur iPhone / iPad
 
@@ -33,7 +33,8 @@ npm run test:e2e   # test de bout en bout (Chromium)
 | Fichier | Rôle |
 | --- | --- |
 | `src/frigobilan.html` | Source de l'application |
-| `src/stations/` | Stations de vannes : données, migration, nomenclature (module testé) |
+| `src/stations/` | Stations de vannes : données, nomenclature, implantation, schéma 2D, modèle et visionneuse 3D |
+| `src/fonts/` | Police Mona Sans (licence SIL OFL) intégrée au fichier |
 | `tools/build.mjs` | Construction du fichier unique |
 | `dist/frigobilan.html` | Application construite, à télécharger |
 | `frigobilan.html` | Même fichier, servi par GitHub Pages (ne pas modifier à la main) |
