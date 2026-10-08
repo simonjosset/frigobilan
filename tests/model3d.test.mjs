@@ -30,7 +30,7 @@ test("3D : tuyauterie, coudes, calorifuge et flèches", () => {
   assert.equal(torus.length, 2, "2 coudes");
   assert.equal(calo.length, tubes.length - 1, "calorifuge sur chaque tronçon et coude (pas sur le té)");
   calo.forEach(c => assert.ok(c.material.transparent));
-  assert.equal(m.root.getObjectByName("fleches").children.length, 6);
+  assert.equal(m.root.getObjectByName("fleches").children.length, 8); // 4 raccordements réseau, 2 côté batterie, 2 verticales
   const sans = buildModel(station({ isolation: { on: false } }));
   assert.equal(sans.root.getObjectByName("tuyauterie").children.filter(o => o.name === "calorifuge").length, 0);
   // Couleur des tronçons par réseau

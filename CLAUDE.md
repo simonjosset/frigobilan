@@ -6,8 +6,9 @@ Outil web d'aide à l'étude pour frigoristes, en français, livré en **un seul
 
 - `src/frigobilan.html` : l'application (HTML, CSS et un bloc `<script>` par onglet). **C'est ici qu'on modifie l'app.**
 - `src/stations/` : modules ES purs (sans DOM), testés avec `node --test`, intégrés au HTML par le build à l'emplacement `<script data-inline="…"></script>`. Stations de vannes, exposées dans la page sous `window.FBStations` :
-  - `model.js` : données, migration, nomenclature, CSV ;
-  - `layout.js` : implantation (position de chaque composant, tubes, coudes, tés), source unique pour le 2D, le 3D et les métrés ;
+  - `types.js` : catalogue des types de stations (régulation 2 voies / 3 voies, boucle à débit constant, dégivrage par mélange, électrique, par échangeur), décrits comme des topologies : niveaux, tronçons, verticales, emplacements de composants, options, remarques de conception ;
+  - `model.js` : données, migration, composants, nomenclature, CSV ;
+  - `layout.js` : implantation générique (colonnes compactées, position de chaque composant, tubes, coudes et tés détectés, contrôle des tubes pendants ou croisés), source unique pour le 2D, le 3D et les métrés ;
   - `schema2d.js` : schéma de principe en SVG (texte), symboles dans le style du schéma de référence ;
   - `model3d.js` : modèle 3D low-poly procédural (Three.js, testable sous node), `viewer3d.js` : rendu WebGL à la demande, OrbitControls, vues, sélection, PNG.
     Ce bundle 3D (`index3d.js` → `window.FBStations3D`, ~565 Ko minifié) est rangé dans un `<script type="text/plain">` et exécuté seulement à la première ouverture de l'onglet Stations.
@@ -40,3 +41,5 @@ Les évaporateurs (`rooms[].brassage.evaps[]`) ont un `id` stable ; une station 
 - Aucun CDN ni appel réseau : polices, Three.js et modules sont intégrés au fichier (vérifié par `tests/build.test.mjs`).
 - Aucun nom de client réel dans le code, les exemples ou les tests : noms de code uniquement (Projet Alpha…).
 - Ne pas modifier les formules de calcul existantes (Bilan, Brassage, Électricité, DN rapide).
+- Stations de vannes : contenu générique rédigé pour l'app ; ne pas reprendre de documents internes d'entreprise (numérotations, textes, marques).
+- Ajouter un type de station = une entrée dans `types.js` ; `tests/types.test.mjs` vérifie automatiquement toutes ses combinaisons d'options.

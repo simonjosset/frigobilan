@@ -6,6 +6,7 @@
    Elle est enregistrée dans le projet : project.stations = [station, …]. */
 
 import { layout } from "./layout.js";
+import { TYPES_SDV, TYPE_DEFAUT, FAMILLES, OPTION_LABELS, typeOf } from "./types.js";
 
 export const VERSION = 1;
 export const DN_LIST = [15, 20, 25, 32, 40, 50, 65, 80, 100];
@@ -14,49 +15,26 @@ export const ACTIONNEURS = { manuel: "Manuel", TOR: "Motorisé TOR", modulant: "
 
 /* Types de composants. `des` : désignation de base, l'actionneur est ajouté s'il est motorisé. */
 export const TYPES = {
-  iso:     { des: "Vanne à bille d'isolement", prefix: "V", act: "manuel" },
-  purge:   { des: "Vanne de purge / vidange", prefix: "P", act: "manuel" },
-  filtre:  { des: "Filtre à tamis", prefix: "F", act: null },
-  v3v_tor: { des: "Vanne 3 voies à bille", prefix: "V", act: "TOR" },
-  v2v_tor: { des: "Vanne 2 voies à bille", prefix: "V", act: "TOR" },
-  v2v_mod: { des: "Vanne 2 voies de régulation à siège, à brides", prefix: "V", act: "modulant" },
-  ta:      { des: "Robinet d'équilibrage (type TA)", prefix: "R", act: "manuel" }
+  iso:       { des: "Vanne à bille d'isolement", prefix: "V", act: "manuel" },
+  purge:     { des: "Vanne de purge / vidange + bouchon", prefix: "P", act: "manuel" },
+  filtre:    { des: "Filtre à tamis", prefix: "F", act: null },
+  v3v_tor:   { des: "Vanne 3 voies à bille", prefix: "V", act: "TOR" },
+  v2v_tor:   { des: "Vanne 2 voies à bille", prefix: "V", act: "TOR" },
+  v2v_mod:   { des: "Vanne 2 voies de régulation à siège, à brides", prefix: "V", act: "modulant" },
+  v2v_reg:   { des: "Vanne 2 voies de régulation", prefix: "V", act: "TOR" },
+  v3v_reg:   { des: "Vanne 3 voies de régulation", prefix: "V", act: "modulant" },
+  ta:        { des: "Vanne d'équilibrage (type TA)", prefix: "R", act: "manuel" },
+  soupape:   { des: "Robinet à soupape de réglage", prefix: "R", act: "manuel" },
+  clapet:    { des: "Clapet anti-retour", prefix: "K", act: null },
+  pompe:     { des: "Circulateur + kit manométrique", prefix: "C", act: null },
+  sonde:     { des: "Sonde de température à plongeur", prefix: "T", act: null },
+  echangeur: { des: "Échangeur à plaques", prefix: "E", act: null },
+  thermo:    { des: "Thermoplongeur avec thermostat de sécurité", prefix: "H", act: null }
 };
 
-/* Modèles de station. Ordre = du raccordement batterie vers les réseaux, ligne par ligne :
-   c'est aussi l'ordre de lecture du schéma de principe et du modèle 3D.
-   - ligne « sortie » : sortie de la batterie, puis deux départs vers les retours des réseaux A et B ;
-   - ligne « entree » : arrivée des réseaux A et B par la vanne 3 voies, puis entrée de la batterie.
-   `opt` : le composant n'existe que si l'option est cochée. `dn` : DN imposé (purges). */
-export const MODELES = {
-  "glycol-tor": {
-    nom: "Eau glycolée · TOR",
-    slots: [
-      { key: "S-ISO",  type: "iso",     ligne: "sortie", branche: "commun", role: "Isolement sortie batterie" },
-      { key: "S-PUR",  type: "purge",   ligne: "sortie", branche: "commun", role: "Purge en point haut", dn: 15 },
-      { key: "A-V2M",  type: "v2v_mod", ligne: "sortie", branche: "A",      role: "Régulation du retour réseau A" },
-      { key: "A-ISO",  type: "iso",     ligne: "sortie", branche: "A",      role: "Isolement retour réseau A", opt: "isolDeparts" },
-      { key: "B-FIL",  type: "filtre",  ligne: "sortie", branche: "B",      role: "Filtre avant la vanne TOR", opt: "filtreTor" },
-      { key: "B-V2T",  type: "v2v_tor", ligne: "sortie", branche: "B",      role: "Ouverture / fermeture du retour réseau B" },
-      { key: "B-TA",   type: "ta",      ligne: "sortie", branche: "B",      role: "Équilibrage du réseau B" },
-      { key: "E-ISO",  type: "iso",     ligne: "entree", branche: "commun", role: "Isolement entrée batterie" },
-      { key: "E-PUR",  type: "purge",   ligne: "entree", branche: "commun", role: "Purge en point haut", dn: 15 },
-      { key: "E-FIL",  type: "filtre",  ligne: "entree", branche: "commun", role: "Filtre entrée batterie" },
-      { key: "E-VID",  type: "purge",   ligne: "entree", branche: "commun", role: "Vidange", dn: 15, opt: "vidange" },
-      { key: "E-V3V",  type: "v3v_tor", ligne: "entree", branche: "commun", role: "Sélection réseau A / réseau B" },
-      { key: "A-ISOE", type: "iso",     ligne: "entree", branche: "A",      role: "Isolement départ réseau A", opt: "isolDeparts" },
-      { key: "B-ISOE", type: "iso",     ligne: "entree", branche: "B",      role: "Isolement départ réseau B", opt: "isolDeparts" }
-    ],
-    // Composition lue sur le schéma de principe de référence
-    options: { isolDeparts: true, filtreTor: false, vidange: true }
-  }
-};
-
-export const OPTIONS = {
-  isolDeparts: "Vannes d'isolement sur les départs réseaux",
-  filtreTor: "Filtre à tamis avant la vanne 2 voies TOR",
-  vidange: "Vanne de vidange après le filtre"
-};
+/* Types de stations : voir types.js (topologie, options, remarques) */
+export { TYPES_SDV, TYPE_DEFAUT, FAMILLES, OPTION_LABELS, typeOf };
+export const OPTIONS = OPTION_LABELS;
 
 export function newId() {
   return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -104,14 +82,17 @@ export function listEvaporators(project) {
 
 /* ---------- Stations ---------- */
 
-function defaults(code) {
-  var m = MODELES["glycol-tor"];
+// Anciens noms par défaut (avant le catalogue), remplacés quand on change de type
+const RESEAUX_ANCIENS = ["Réseau A (régulé)", "Réseau B (TOR)"];
+
+function defaults(code, type) {
+  var T = TYPES_SDV[type] || TYPES_SDV[TYPE_DEFAUT];
   return {
-    v: VERSION, id: "", code: code || "ST1", evapId: null, type: "glycol-tor",
+    v: VERSION, id: "", code: code || "ST1", evapId: null, type: TYPES_SDV[type] ? type : TYPE_DEFAUT,
     dn: 32, antenne: 2.5, derivation: 0.5, orientation: "droite",
     isolation: { on: true, ep: 19 },
-    reseaux: { A: "Réseau A (régulé)", B: "Réseau B (TOR)" },
-    options: Object.assign({}, m.options),
+    reseaux: { A: T.reseaux.A, B: T.reseaux.B || "Réseau chaud" },
+    options: Object.assign({}, T.options),
     composants: []
   };
 }
@@ -125,16 +106,17 @@ function nextCode(stations) {
 /* Composition d'une station à partir de son modèle et de ses options.
    Les réglages faits à la main (DN, repère, actionneur) sont conservés, composant par composant. */
 export function rebuild(station) {
-  var m = MODELES[station.type] || MODELES["glycol-tor"], prev = {}, count = {};
+  var T = typeOf(station), prev = {}, count = {};
   (station.composants || []).forEach(function (c) { if (isObj(c) && c.key) prev[c.key] = c; });
-  station.composants = m.slots.filter(function (s) { return !s.opt || station.options[s.opt]; }).map(function (s) {
+  station.composants = T.slots.filter(function (s) { return !s.opt || station.options[s.opt]; }).map(function (s) {
     var t = TYPES[s.type], p = prev[s.key] || {}, custom = isObj(p.custom) ? p.custom : {};
+    var actAuto = s.act === "reg" ? (station.options.regMod ? "modulant" : "TOR") : t.act;
     count[t.prefix] = (count[t.prefix] || 0) + 1;
     var c = {
-      key: s.key, type: s.type, ligne: s.ligne, branche: s.branche, role: s.role,
+      key: s.key, type: s.type, ligne: (T.levels.filter(function (l) { return l.id === s.level; })[0] || { ligne: "by-pass" }).ligne, role: s.role,
       dn: custom.dn && DN_LIST.indexOf(p.dn) >= 0 ? p.dn : (s.dn || station.dn),
       rep: custom.rep && p.rep ? String(p.rep) : station.code + "-" + t.prefix + count[t.prefix],
-      act: custom.act && ACTIONNEURS[p.act] ? p.act : t.act
+      act: custom.act && ACTIONNEURS[p.act] && t.act ? p.act : actAuto
     };
     if (custom.dn || custom.rep || custom.act) c.custom = { dn: !!custom.dn, rep: !!custom.rep, act: !!custom.act };
     return c;
@@ -143,14 +125,14 @@ export function rebuild(station) {
 }
 
 /* Complète et corrige une station venant du stockage ou d'un import. */
-export function normalizeStation(s, code) {
-  var d = defaults(code), o = isObj(s) ? s : {};
+export function normalizeStation(s, code, type) {
+  var o = isObj(s) ? s : {}, d = defaults(code, TYPES_SDV[o.type] ? o.type : type);
   var st = {
     v: VERSION,
     id: o.id ? String(o.id) : "",
     code: o.code ? String(o.code) : d.code,
     evapId: o.evapId ? String(o.evapId) : null,
-    type: MODELES[o.type] ? o.type : d.type,
+    type: d.type,
     dn: DN_LIST.indexOf(o.dn) >= 0 ? o.dn : nearestDN(o.dn, d.dn),
     antenne: Math.max(0, num(o.antenne, d.antenne)),
     derivation: Math.max(0, num(o.derivation, d.derivation)),
@@ -165,21 +147,30 @@ export function normalizeStation(s, code) {
 }
 
 /* Nouvelle station pour un évaporateur. Ne modifie pas le projet. */
-export function createStation(project, evapId, makeId) {
-  var s = normalizeStation({ evapId: evapId || null }, nextCode(project && project.stations));
+export function createStation(project, evapId, makeId, type) {
+  var s = normalizeStation({ evapId: evapId || null }, nextCode(project && project.stations), type);
   s.id = (makeId || newId)();
   return s;
 }
 
 /* Ajoute une station au projet et la retourne. */
-export function addStation(project, evapId, makeId) {
+export function addStation(project, evapId, makeId, type) {
   if (!Array.isArray(project.stations)) project.stations = [];
-  var s = createStation(project, evapId, makeId);
+  var s = createStation(project, evapId, makeId, type);
   project.stations.push(s);
   return s;
 }
 
 export function setStation(station, patch) {
+  // Changement de type : nouvelle composition (réglages manuels abandonnés), options et réseaux par défaut du type
+  if (patch.type && TYPES_SDV[patch.type] && patch.type !== station.type) {
+    var oldT = typeOf(station), newT = TYPES_SDV[patch.type];
+    ["A", "B"].forEach(function (k) {
+      var cur = station.reseaux[k];
+      if (!cur || cur === oldT.reseaux[k] || RESEAUX_ANCIENS.indexOf(cur) >= 0) station.reseaux[k] = newT.reseaux[k] || (k === "B" ? "Réseau chaud" : cur);
+    });
+    station.type = patch.type; station.options = Object.assign({}, newT.options); station.composants = [];
+  }
   // Les repères automatiques suivent le code de la station (recalculés par rebuild)
   if (patch.code != null && String(patch.code).trim()) station.code = String(patch.code).trim();
   if (patch.dn != null) station.dn = nearestDN(patch.dn, station.dn);
@@ -203,7 +194,7 @@ export function setComponent(station, key, patch) {
   var custom = Object.assign({ dn: false, rep: false, act: false }, c.custom);
   if (patch.dn !== undefined) { custom.dn = patch.dn !== null && DN_LIST.indexOf(nearestDN(patch.dn, NaN)) >= 0; if (custom.dn) c.dn = nearestDN(patch.dn, c.dn); }
   if (patch.rep !== undefined) { custom.rep = patch.rep !== null && String(patch.rep).trim() !== ""; if (custom.rep) c.rep = String(patch.rep).trim(); }
-  if (patch.act !== undefined) { custom.act = patch.act !== null && !!ACTIONNEURS[patch.act]; if (custom.act) c.act = patch.act; }
+  if (patch.act !== undefined) { custom.act = patch.act !== null && !!ACTIONNEURS[patch.act] && !!TYPES[c.type].act; if (custom.act) c.act = patch.act; }
   c.custom = custom;
   return rebuild(station);
 }
@@ -246,9 +237,9 @@ export function stationRows(station) {
     return { rep: c.rep, des: designation(c), dn: c.dn, qte: 1, unite: "u", act: ACTIONNEURS[c.act] || "", role: c.role, key: c.key };
   });
   var g = layout(station), ml = round2(g.tube);
-  rows.push({ rep: "", des: "Tube acier", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Antennes et dérivations", key: "TUBE" });
-  rows.push({ rep: "", des: "Coude 90°", dn: station.dn, qte: g.coudes.length, unite: "u", act: "", role: "Dérivations du réseau B", key: "COUDE" });
-  rows.push({ rep: "", des: "Té égal", dn: station.dn, qte: g.tes.length, unite: "u", act: "", role: "Départ de la dérivation du réseau B", key: "TE" });
+  rows.push({ rep: "", des: "Tube acier", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Antennes, dérivations et by-pass", key: "TUBE" });
+  if (g.coudes.length) rows.push({ rep: "", des: "Coude 90°", dn: station.dn, qte: g.coudes.length, unite: "u", act: "", role: "Changements de direction", key: "COUDE" });
+  if (g.tes.length) rows.push({ rep: "", des: "Té égal", dn: station.dn, qte: g.tes.length, unite: "u", act: "", role: "Piquages des dérivations et by-pass", key: "TE" });
   if (station.isolation.on) rows.push({ rep: "", des: "Calorifuge élastomère ép. " + station.isolation.ep + " mm", dn: station.dn, qte: ml, unite: "ml", act: "", role: "Isolation de la tuyauterie", key: "CALO" });
   return rows;
 }

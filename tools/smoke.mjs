@@ -116,7 +116,7 @@ check("3D : vue de face", face[2] > 0.99, face.join(","));
 
 // Clic sur un symbole du schéma → sélection
 await page.locator('#st2d g.c[data-key="B-TA"]').click(); await page.waitForTimeout(200);
-check("2D : toucher le robinet d'équilibrage le sélectionne", (await page.innerText("#stInfo")).includes("Robinet d'équilibrage"));
+check("2D : toucher la vanne d'équilibrage la sélectionne", (await page.innerText("#stInfo")).includes("Vanne d'équilibrage"));
 
 // Réglages : DN, option filtre, nom de réseau
 await page.selectOption("#stDN", "50"); await page.waitForTimeout(200);
@@ -143,6 +143,26 @@ check("Impression : fiche avec schéma, image 3D et nomenclature", note.printed 
 await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light")); await page.waitForTimeout(300);
 check("Thème clair appliqué au schéma", (await page.innerHTML("#st2d")).includes("#1B2340"));
 await page.evaluate(() => document.documentElement.removeAttribute("data-theme"));
+
+// Catalogue : passer la station en « boucle à débit constant · vanne 2 voies »
+await page.evaluate(() => FBStationsUI.select(null));
+await page.selectOption("#stType", "boucle-v2v"); await page.waitForTimeout(200);
+// La station a un repère réglé à la main (TA-1) : l'application demande confirmation
+const asked = await page.locator("dialog.mdlg[open]").textContent({ timeout: 3000 }).catch(() => "");
+check("Catalogue : confirmation avant de perdre les réglages manuels", asked.includes("Boucle à débit constant"), asked.slice(0, 80));
+await page.click('dialog.mdlg button[value="ok"]'); await page.waitForTimeout(500);
+const typed = await page.evaluate(() => ({ type: Store.get("stations")[0].type, svg: document.querySelectorAll("#st2d g.c").length, rows: document.querySelectorAll("#stNomen tr[data-key]").length,
+  picks: Object.keys(FBStationsUI.viewer() ? FBStationsUI.viewer().camera ? FBStations.layout(Store.get("stations")[0]).items : [] : []).length,
+  info: document.getElementById("stTypeInfo").innerText, legend: document.getElementById("stLegend").innerText, der: document.getElementById("stDerBox").hidden, netB: document.getElementById("stNetBBox").hidden,
+  title: document.querySelector("#st2d svg").getAttribute("aria-label") }));
+check("Catalogue : changement de type (composition, 2D, nomenclature, fiche, légende)", typed.type === "boucle-v2v" && typed.svg === 11 && typed.rows === 11 && typed.picks === 11 &&
+  typed.info.includes("Débit batterie constant") && typed.legend.includes("Circulateur") && typed.der && typed.netB && typed.title.includes("Boucle à débit constant"), JSON.stringify(typed).slice(0, 220));
+await page.locator("#st3d").scrollIntoViewIfNeeded(); await page.waitForTimeout(400);
+const pc = await page.evaluate(() => FBStationsUI.viewer().screenOf("E-POM"));
+await page.touchscreen.tap(pc.x, pc.y); await page.waitForTimeout(300);
+check("3D : toucher le circulateur l'identifie", (await page.innerText("#stInfo")).includes("Circulateur + kit manométrique"));
+await page.selectOption("#stType", "glycol-tor"); await page.waitForTimeout(400);
+await page.selectOption("#stDN", "50"); await page.locator('[data-opt="filtreTor"]').check(); await page.fill("#stNetA", "Réseau froid"); await page.waitForTimeout(300);
 
 // Nouvelle station (plus d'évaporateur libre) puis rechargement
 await page.click("#stNew"); await page.waitForTimeout(300);
