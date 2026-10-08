@@ -27,11 +27,11 @@ test("implantation : composants dans l'ordre du schéma, longueurs et allongemen
   const s = station({ antenne: 1 });
   const g = layout(s);
   assert.equal(g.pitch, pitch(32)); assert.equal(g.pitch, 0.308);
-  assert.equal(g.required, 2.002); assert.equal(g.L, 2.002); assert.equal(g.allonge, true);
-  const at = k => g.items.find(i => i.key === k);
-  assert.ok(at("S-ISO").x < at("S-PUR").x && at("S-PUR").x < g.xTee && g.xTee < at("A-V2M").x && at("A-V2M").x < at("A-ISO").x);
+  assert.equal(g.endCol, 8); assert.equal(g.required, 2.31); assert.equal(g.L, 2.31); assert.equal(g.allonge, true);
+  const at = k => g.items.find(i => i.key === k), te = g.tes[0], vert = id => g.verts.find(v => v.id === id);
+  assert.ok(at("S-ISO").x < at("S-PUR").x && at("S-PUR").x < te.x && te.x < at("A-V2M").x && at("A-V2M").x < at("A-ISO").x);
   assert.ok(at("E-ISO").x < at("E-PUR").x && at("E-PUR").x < at("E-FIL").x && at("E-FIL").x < at("E-VID").x && at("E-VID").x < at("E-V3V").x);
-  assert.equal(at("E-V3V").x, g.xV3V);
+  assert.equal(at("E-V3V").x, vert("EB-v").x); assert.equal(te.x, vert("SB-v").x);
   assert.deepEqual([at("B-V2T").level, at("B-TA").level, at("B-ISOE").level], ["SB", "SB", "EB"]);
   assert.ok(at("B-V2T").y > at("A-V2M").y && at("B-ISOE").y < at("A-ISOE").y);
   // Toutes les vannes tiennent dans la longueur des antennes
@@ -62,14 +62,14 @@ test("schéma 2D : XML bien formé, textes saisis échappés", () => {
 
 test("schéma 2D : options, calorifuge, orientation et thème", () => {
   const avec = schemaSVG(station()), sans = schemaSVG(station({ isolation: { on: false } }));
-  assert.equal((avec.match(/class="calo"/g) || []).length, 4);
+  assert.equal((avec.match(/class="calo"/g) || []).length, 8); // 6 tronçons + 2 verticales
   assert.ok(!sans.includes('class="calo"'));
   assert.ok(avec.includes("calorifugée 19 mm") && !sans.includes("calorifugée"));
   const filtres = svg => (svg.match(/data-key="[^"]*FIL"/g) || []).length;
   assert.equal(filtres(avec), 1);
   assert.equal(filtres(schemaSVG(station({ options: { filtreTor: true } }))), 2);
   // Départs à gauche : la batterie est dessinée à droite
-  const w = svg => +svg.match(/viewBox="0 0 ([\d.]+)/)[1], bx = svg => +svg.match(/<rect class="sym fill" x="([\d.]+)" y="88"/)[1];
+  const w = svg => +svg.match(/viewBox="0 0 ([\d.]+)/)[1], bx = svg => +svg.match(/<rect class="sym fill" x="([\d.]+)"/)[1]; // 1er rectangle : la batterie
   const d = schemaSVG(station()), g = schemaSVG(station({ orientation: "gauche" }));
   assert.ok(bx(d) < w(d) / 2 && bx(g) > w(g) / 2);
   assert.ok(schemaSVG(station(), { palette: PALETTE_SOMBRE }).includes('fill="#0B1739"'));

@@ -38,7 +38,7 @@ test("composition du devis type : 2 isolements, 2 filtres, 2 purges", () => {
   assert.ok(des.includes("Vanne 3 voies à bille motorisée TOR"));
   assert.ok(des.includes("Vanne 2 voies à bille motorisée TOR"));
   assert.ok(des.includes("Vanne 2 voies de régulation à siège, à brides motorisée modulante"));
-  assert.ok(des.includes("Robinet d'équilibrage (type TA)"));
+  assert.ok(des.includes("Vanne d'équilibrage (type TA)"));
 });
 
 test("repères uniques, préfixés par le code de la station", () => {
@@ -142,7 +142,7 @@ test("nomenclature du projet : regroupement par désignation et DN", () => {
   const iso50 = rows.find(r => r.des === "Vanne à bille d'isolement" && r.dn === 50);
   assert.equal(iso32.qte, 5); assert.equal(iso50.qte, 5);
   assert.match(iso32.rep, /^ST1-V/); assert.match(iso50.rep, /^ST2-V/);
-  const purges = rows.find(r => r.des === "Vanne de purge / vidange");
+  const purges = rows.find(r => r.des === "Vanne de purge / vidange + bouchon");
   assert.equal(purges.dn, 15); assert.equal(purges.qte, 6);
   assert.equal(rows.find(r => r.des === "Tube acier" && r.dn === 32).qte, 8.54);
   assert.equal(a.code, "ST1"); assert.equal(b.code, "ST2");

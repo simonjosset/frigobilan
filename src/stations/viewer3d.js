@@ -5,7 +5,7 @@ import { Scene, PerspectiveCamera, WebGLRenderer, HemisphereLight, DirectionalLi
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { buildModel } from "./model3d.js";
 
-export { buildModel, COULEURS, LEGENDE } from "./model3d.js";
+export { buildModel, COULEURS, LEGENDE, legendFor } from "./model3d.js";
 
 /* Directions de vue (depuis la cible vers la caméra) */
 export const VUES = { face: [0, 0, 1], dessus: [0, 1, 0.0001], iso: [0.85, 0.65, 1.15] };

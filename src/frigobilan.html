@@ -360,6 +360,18 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
 .st2d svg{display:block;width:100%;height:auto}
 .st2d.zoom svg{width:auto;min-width:900px}
 .st2d .c{cursor:pointer}
+.sttype{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:4px 0 12px;font-size:13px;color:var(--muted)}
+.sttype b{color:var(--ink)}
+.sttype .deb{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.sttype .deb span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:12px;color:var(--ink)}
+.sttype ul{margin:8px 0 0;padding-left:18px}
+.sttype li{margin:3px 0}
+.stguide{margin:4px 0 12px;font-size:13px}
+.stguide summary{cursor:pointer;color:var(--accent);font-weight:600;padding:6px 0}
+.stguide table{width:100%;border-collapse:collapse;margin-top:6px}
+.stguide th{text-align:left;color:var(--faint);font-weight:500;padding:6px;border-bottom:1px solid var(--line)}
+.stguide td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+.stguide td b{color:var(--ink)}
 .stopts{display:flex;flex-direction:column;gap:8px;margin:4px 0 8px}
 .stopts label{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink);font-weight:500}
 .stopts input{width:18px;height:18px;accent-color:var(--accent);flex:none}
@@ -736,10 +748,12 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <div class="stbar" id="stBar" role="tablist" aria-label="Stations du projet"></div>
       <section class="card" id="stEmpty" hidden>
         <h2>Aucune station pour l'instant</h2>
-        <p class="hint" id="stEmptyHint">Choisissez l'évaporateur à équiper : la station « eau glycolée TOR » est créée avec la composition du schéma de principe, modifiable ensuite.</p>
+        <p class="hint" id="stEmptyHint"></p>
         <div class="row">
           <div><label for="stEmptyEvap">Évaporateur</label><div class="f"><select id="stEmptyEvap"></select></div></div>
+          <div><label for="stEmptyType">Type de station</label><div class="f"><select id="stEmptyType" class="sttypesel"></select></div></div>
         </div>
+        <details class="stguide" id="stGuide"><summary>Quel type de station choisir ?</summary><div id="stGuideBody"></div></details>
         <div class="btns" style="margin-bottom:12px"><button class="b-main" type="button" id="stCreate">Créer la station</button><button class="b-ghost" type="button" data-view="brassage">Gérer les évaporateurs (Brassage)</button></div>
       </section>
       <div class="stgrid" id="stMain" hidden>
@@ -764,18 +778,20 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
           <h2 id="stParTitle">Paramètres</h2>
           <div class="row">
             <div><label for="stEvap">Évaporateur</label><div class="f"><select id="stEvap"></select></div></div>
-            <div><label for="stType">Type de station</label><div class="f"><select id="stType"><option value="glycol-tor">Eau glycolée · TOR</option><option disabled>CO₂ détente directe (à venir)</option><option disabled>CO₂ pompé (à venir)</option></select></div></div>
+            <div><label for="stType">Type de station</label><div class="f"><select id="stType" class="sttypesel"></select></div></div>
             <div><label for="stCode">Code de la station</label><div class="f"><input id="stCode" type="text" maxlength="12" autocomplete="off"></div></div>
             <div><label for="stDN">DN de la station</label><div class="f"><select id="stDN"></select></div></div>
             <div><label for="stAnt">Longueur des antennes</label><div class="f"><input id="stAnt" inputmode="decimal"><span class="u">m</span></div></div>
-            <div><label for="stDer">Écart des dérivations</label><div class="f"><input id="stDer" inputmode="decimal"><span class="u">m</span></div></div>
+            <div id="stDerBox"><label for="stDer">Écart des dérivations</label><div class="f"><input id="stDer" inputmode="decimal"><span class="u">m</span></div></div>
             <div><label for="stOri">Orientation</label><div class="f"><select id="stOri"><option value="droite">Départs à droite</option><option value="gauche">Départs à gauche</option></select></div></div>
             <div><label for="stEp">Calorifuge</label><div class="f"><input id="stEp" inputmode="decimal"><span class="u">mm</span></div></div>
-            <div><label for="stNetA">Réseau A (retour régulé)</label><div class="f"><input id="stNetA" type="text" maxlength="40"></div></div>
-            <div><label for="stNetB">Réseau B (retour TOR)</label><div class="f"><input id="stNetB" type="text" maxlength="40"></div></div>
+            <div><label for="stNetA" id="stNetALab">Nom du réseau</label><div class="f"><input id="stNetA" type="text" maxlength="40"></div></div>
+            <div id="stNetBBox"><label for="stNetB">Nom du réseau chaud</label><div class="f"><input id="stNetB" type="text" maxlength="40"></div></div>
           </div>
           <p class="hint" id="stAntHint" hidden></p>
+          <div class="sttype" id="stTypeInfo"></div>
           <div class="stopts" id="stOpts"></div>
+          <details class="stguide"><summary>Comparer les types de stations</summary><div class="stGuideAll"></div></details>
           <div class="btns" style="margin:6px 0 12px"><button class="b-ghost" type="button" id="stDup">Dupliquer</button><button class="b-ghost" type="button" id="stDel">Supprimer la station</button></div>
         </section>
         <section class="card st-an" aria-labelledby="stNomTitle">
@@ -3856,25 +3872,48 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("stBar").innerHTML = ST.map(function(s){
       var lab = evapLabel(s.evapId);
       return '<button type="button" class="stchip" role="tab" data-st="'+esc(s.id)+'" aria-selected="'+(s.id === cur)+'">'+esc(s.code)+
-        '<small>'+(lab ? esc(lab) : '<span class="warn-dot">●</span> Sans évaporateur')+' · DN '+s.dn+'</small></button>';
+        '<small>'+(lab ? esc(lab) : '<span class="warn-dot">●</span> Sans évaporateur')+' · DN '+s.dn+'</small><small>'+esc(F.TYPES_SDV[s.type].nom)+'</small></button>';
     }).join("");
+  }
+  /* Types de stations : liste groupée par famille, fiche du type, aide au choix */
+  var newType = F.TYPE_DEFAUT;
+  function typeOptions(sel){
+    return F.FAMILLES.map(function(fam){
+      return '<optgroup label="'+esc(fam)+'">'+Object.keys(F.TYPES_SDV).filter(function(k){ return F.TYPES_SDV[k].famille === fam; }).map(function(k){
+        return '<option value="'+k+'"'+(k === sel ? ' selected' : '')+'>'+esc(F.TYPES_SDV[k].nom)+'</option>'; }).join("")+'</optgroup>';
+    }).join("")+'<optgroup label="À venir"><option disabled>CO₂ détente directe</option><option disabled>CO₂ pompé</option></optgroup>';
+  }
+  function debits(T){ return '<div class="deb"><span>Débit primaire '+T.primaire+'</span><span>Débit batterie '+T.secondaire+'</span><span>'+esc(T.famille)+'</span></div>'; }
+  function typeInfo(T){ return '<b>'+esc(T.nom)+'</b> — '+esc(T.resume)+debits(T)+'<div><b>Pour :</b> '+esc(T.usage)+'</div><ul>'+T.notes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join("")+'</ul>'; }
+  function guide(){
+    return '<table><thead><tr><th>Type</th><th>Débits</th><th>Pour</th></tr></thead><tbody>'+Object.keys(F.TYPES_SDV).map(function(k){
+      var T = F.TYPES_SDV[k]; return '<tr><td><b>'+esc(T.nom)+'</b><br>'+esc(T.resume)+'</td><td>Primaire '+T.primaire+'<br>Batterie '+T.secondaire+'</td><td>'+esc(T.usage)+'</td></tr>';
+    }).join("")+'</tbody></table>';
   }
   function renderEmpty(){
     var list = evaps();
     $("stEmptyEvap").innerHTML = evapOptions(null, !list.length);
-    $("stEmptyHint").textContent = list.length ? "Choisissez l'évaporateur à équiper : la station « eau glycolée TOR » est créée avec la composition du schéma de principe, modifiable ensuite."
+    $("stEmptyType").innerHTML = typeOptions(newType);
+    $("stGuideBody").innerHTML = guide();
+    $("stEmptyHint").textContent = list.length ? "Choisissez l'évaporateur à équiper et le type de station : elle est créée avec sa composition type, modifiable ensuite."
       : "Aucun évaporateur dans le projet : ajoutez-en dans l'onglet Brassage, ou créez une station sans évaporateur et rattachez-la plus tard.";
   }
   function renderParams(s){
     $("stEvap").innerHTML = evapOptions(s.evapId, true);
-    $("stCode").value = s.code; $("stType").value = s.type;
+    var T = F.TYPES_SDV[s.type];
+    $("stCode").value = s.code; $("stType").innerHTML = typeOptions(s.type);
+    $("stTypeInfo").innerHTML = typeInfo(T);
+    document.querySelector("#v-stations .stGuideAll").innerHTML = guide();
+    $("stDerBox").hidden = !T.levels.some(function(l){ return l.d; });
+    $("stNetBBox").hidden = !T.reseaux.B;
+    $("stNetALab").textContent = T.reseaux.B ? "Nom du réseau froid" : "Nom du réseau";
     $("stDN").innerHTML = F.DN_LIST.map(function(d){ return '<option value="'+d+'"'+(d === s.dn ? ' selected' : '')+'>DN '+d+'</option>'; }).join("");
     $("stAnt").value = fr(s.antenne); $("stDer").value = fr(s.derivation); $("stOri").value = s.orientation;
     $("stEp").value = s.isolation.on ? fr(s.isolation.ep) : "";
     $("stEp").placeholder = "sans";
     $("stNetA").value = s.reseaux.A; $("stNetB").value = s.reseaux.B;
     $("stOpts").innerHTML = '<label><input type="checkbox" data-opt="calo"'+(s.isolation.on ? ' checked' : '')+'>Tuyauterie calorifugée</label>'+
-      Object.keys(F.OPTIONS).map(function(k){ return '<label><input type="checkbox" data-opt="'+k+'"'+(s.options[k] ? ' checked' : '')+'>'+esc(F.OPTIONS[k])+'</label>'; }).join("");
+      Object.keys(s.options).map(function(k){ return '<label><input type="checkbox" data-opt="'+k+'"'+(s.options[k] ? ' checked' : '')+'>'+esc(F.OPTION_LABELS[k])+'</label>'; }).join("");
     hintAntenne(s);
   }
   function hintAntenne(s){
@@ -3904,10 +3943,10 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("stNomenP").innerHTML = ST.length ? table(F.projectRows({stations:ST}), COLSP, false) : "";
     markHL();
   }
-  function renderLegend(){
-    if(!window.FBStations3D) return;
+  function renderLegend(s){
+    if(!window.FBStations3D || !s) return;
     var C = FBStations3D.COULEURS;
-    $("stLegend").innerHTML = FBStations3D.LEGENDE.map(function(l){ return '<span><i style="background:#'+C[l[0]].toString(16).padStart(6,"0")+'"></i>'+esc(l[1])+'</span>'; }).join("");
+    $("stLegend").innerHTML = FBStations3D.legendFor(s).map(function(l){ return '<span><i style="background:#'+C[l[0]].toString(16).padStart(6,"0")+'"></i>'+esc(l[1])+'</span>'; }).join("");
   }
   function renderInfo(s){
     var key = hover || sel, c = s && key ? s.composants.filter(function(x){ return x.key === key; })[0] : null;
@@ -3942,10 +3981,10 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("stPrint").disabled = !s;
     if(!s){ renderEmpty(); return; }
     renderParams(s); render2D(s); renderNomen(s); renderInfo(s);
-    if(viewer){ viewer.setStation(s, Object.assign(theme3d(), {refit:refit})); viewer.highlight(sel); }
+    if(viewer){ viewer.setStation(s, Object.assign(theme3d(), {refit:refit})); viewer.highlight(sel); renderLegend(s); }
   }
   // Après une modification : tout sauf le formulaire (pour garder le champ en cours de saisie)
-  function refresh(s){ save(); renderBar(); render2D(s); renderNomen(s); renderInfo(s); hintAntenne(s); if(viewer){ viewer.setStation(s, theme3d()); viewer.highlight(sel); } }
+  function refresh(s){ save(); renderBar(); render2D(s); renderNomen(s); renderInfo(s); hintAntenne(s); if(viewer){ viewer.setStation(s, theme3d()); viewer.highlight(sel); renderLegend(s); } }
 
   /* ---------- 3D (chargé à la demande) ---------- */
   function load3D(){
@@ -3962,7 +4001,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     try{
       viewer = FBStations3D.createViewer(box, {reducedMotion:reduced(), onPick:function(k){ select(k, "3d"); },
         onHover:function(k){ hover = k; markHL(); renderInfo(station()); }});
-      m.hidden = true; renderLegend();
+      m.hidden = true; renderLegend(station());
     }catch(e){ viewer = null; m.textContent = "La 3D n'a pas pu démarrer sur cet appareil."; }
   }
   // Accès pour les tests de bout en bout
@@ -4007,12 +4046,13 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     var s = station(); if(!s) return;
     var lab = evapLabel(s.evapId), g = F.layout(s), img = viewer ? viewer.toPNG() : null;
     var h = '<h1>Station de vannes '+esc(s.code)+'</h1><table class="meta"><tr><td>Projet</td><td>'+esc(Store.name())+'</td></tr>'+
-      '<tr><td>Évaporateur</td><td>'+esc(lab || "non rattaché")+'</td></tr><tr><td>Type</td><td>Eau glycolée · TOR</td></tr>'+
-      '<tr><td>DN</td><td>DN '+s.dn+'</td></tr><tr><td>Antennes</td><td>'+fr(g.L)+' m · dérivations '+fr(g.rise)+' m</td></tr>'+
+      '<tr><td>Évaporateur</td><td>'+esc(lab || "non rattaché")+'</td></tr><tr><td>Type</td><td>'+esc(F.TYPES_SDV[s.type].nom)+' (débit primaire '+F.TYPES_SDV[s.type].primaire+', batterie '+F.TYPES_SDV[s.type].secondaire+')</td></tr>'+
+      '<tr><td>DN</td><td>DN '+s.dn+'</td></tr><tr><td>Antennes</td><td>'+fr(g.L)+' m'+(F.TYPES_SDV[s.type].levels.some(function(l){ return l.d; }) ? ' · dérivations '+fr(g.rise)+' m' : '')+' · tube '+fr(Math.round(g.tube*100)/100)+' ml</td></tr>'+
       '<tr><td>Calorifuge</td><td>'+(s.isolation.on ? "élastomère "+fr(s.isolation.ep)+" mm" : "sans")+'</td></tr>'+
-      '<tr><td>Réseaux</td><td>A : '+esc(s.reseaux.A)+' · B : '+esc(s.reseaux.B)+'</td></tr></table>';
+      '<tr><td>Réseaux</td><td>'+esc(s.reseaux.A)+(F.TYPES_SDV[s.type].reseaux.B ? ' · '+esc(s.reseaux.B) : '')+'</td></tr></table>';
     h += '<h2>Schéma de principe</h2><div class="plan">'+F.schemaSVG(s)+'</div>';
     if(img) h += '<h2>Modèle 3D</h2><div class="plan"><img src="'+img+'" alt="Modèle 3D de la station" style="width:100%;max-height:90mm;object-fit:contain"></div>';
+    h += '<h2>Points de vigilance</h2><ul class="small">'+F.TYPES_SDV[s.type].notes.map(function(n){ return '<li>'+esc(n)+'</li>'; }).join("")+'</ul>';
     h += '<h2>Nomenclature</h2><table><tr><th>Repère</th><th>Désignation</th><th>DN</th><th>Actionneur</th><th class="n">Qté</th></tr>'+
       F.stationRows(s).map(function(r){ return '<tr><td>'+esc(r.rep)+'</td><td>'+esc(r.des)+'</td><td>DN '+r.dn+'</td><td>'+esc(r.act)+'</td><td class="n">'+fr(r.qte)+' '+r.unite+'</td></tr>'; }).join("")+'</table>';
     h += '<p class="small">Frigobilan · schéma de principe, sans échelle. Métrés estimés d\'après la longueur des antennes.</p>';
@@ -4020,18 +4060,27 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   }
 
   /* ---------- Événements ---------- */
-  function create(evapId){
+  function create(evapId, type){
     if(evapId) persistEvap(evapId);
-    var p = {stations:ST}, s = F.addStation(p, evapId || null);
+    var p = {stations:ST}, s = F.addStation(p, evapId || null, undefined, type || newType);
     ST = p.stations; setCur(s.id); save(); render(true);
     if(!viewerTried){ init3D(); if(viewer) render(true); }
     msg("Station "+s.code+" créée.");
   }
-  $("stCreate").addEventListener("click", function(){ create($("stEmptyEvap").value); });
+  $("stCreate").addEventListener("click", function(){ create($("stEmptyEvap").value, $("stEmptyType").value); });
+  $("stEmptyType").addEventListener("change", function(){ newType = this.value; });
+  // Changement de type : nouvelle composition (confirmation si des composants ont été réglés à la main)
+  $("stType").addEventListener("change", function(){
+    var s = station(), t = this.value, T = F.TYPES_SDV[t];
+    function apply(){ F.setStation(s, {type:t}); newType = t; sel = null; save(); render(true); msg("Station "+s.code+" : "+T.nom+"."); }
+    if(s.composants.some(function(c){ return c.custom && (c.custom.rep || c.custom.dn || c.custom.act); }))
+      UI.confirm("Passer en « "+T.nom+" » ? La composition change et les réglages faits composant par composant seront perdus.", "Changer de type").then(function(ok){ if(ok) apply(); else $("stType").innerHTML = typeOptions(s.type); });
+    else apply();
+  });
   $("stNew").addEventListener("click", function(){
     var used = {}; ST.forEach(function(s){ if(s.evapId) used[s.evapId] = 1; });
     var free = evaps().filter(function(e){ return !used[e.id]; })[0];
-    create(free ? free.id : null);
+    var cs = station(); create(free ? free.id : null, cs ? cs.type : newType);
   });
   $("stBar").addEventListener("click", function(e){ var b = e.target.closest("[data-st]"); if(b){ setCur(b.getAttribute("data-st")); render(true); } });
   $("stEvap").addEventListener("change", function(){ var s = station(); if(this.value) persistEvap(this.value); F.setStation(s, {evapId:this.value || null}); refresh(s); });
