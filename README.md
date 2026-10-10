@@ -2,7 +2,7 @@
 
 Bilan frigorifique de chambre froide : une application web en un seul fichier (`frigobilan.html`).
 
-Onglets : Bilan, Visuel, Brassage, Consultation fournisseur, Électricité, **Stations de vannes** (7 types : régulation 2 voies ou 3 voies, boucle à débit constant avec vanne 2 ou 3 voies, dégivrage par mélange, électrique ou par échangeur ; schéma de principe, modèle 3D manipulable au doigt, nomenclature en CSV) et **DN rapide** (diamètre des tuyauteries d'eau glacée ou glycolée, repris de l'outil Excel « Hydraulique 80 lignes » : débit = P / (cp × ΔT), puis plus petit DN dont la perte de charge reste sous le seuil, frottement de Blasius).
+Onglets : Bilan, Visuel, Brassage, Consultation fournisseur, Électricité, **Stations de vannes** (7 types : régulation 2 voies ou 3 voies, boucle à débit constant avec vanne 2 ou 3 voies, dégivrage par mélange, électrique ou par échangeur ; schéma de principe, modèle 3D manipulable au doigt, nomenclature en CSV) **Gaines** (gaines d'air rectangulaires ou circulaires galva et textiles, dimensionnées à vitesse maximale, 7 m/s par défaut : section, vitesse, pertes de charge, surface de tôle) et **DN rapide** (diamètre des tuyauteries d'eau glacée ou glycolée, repris de l'outil Excel « Hydraulique 80 lignes » : débit = P / (cp × ΔT), puis plus petit DN dont la perte de charge reste sous le seuil, frottement de Blasius).
 
 ## Installer sur iPhone / iPad
 
