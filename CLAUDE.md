@@ -12,6 +12,7 @@ Outil web d'aide à l'étude pour frigoristes, en français, livré en **un seul
   - `schema2d.js` : schéma de principe en SVG (texte), symboles dans le style du schéma de référence ;
   - `model3d.js` : modèle 3D low-poly procédural (Three.js, testable sous node), `viewer3d.js` : rendu WebGL à la demande, OrbitControls, vues, sélection, PNG.
     Ce bundle 3D (`index3d.js` → `window.FBStations3D`, ~565 Ko minifié) est rangé dans un `<script type="text/plain">` et exécuté seulement à la première ouverture de l'onglet Stations.
+- `src/gaines/gaines.js` : dimensionnement des gaines d'air (rectangulaires galva, circulaires galva, textiles), exposé sous `window.FBGaines` ; onglet « Gaines » (bloc `<script>` dans `src/frigobilan.html`), données `Store.get/set("gaines")` par projet.
 - `src/fonts/` : police Mona Sans (SIL OFL, `OFL.txt`) intégrée en base64 par le build à l'emplacement `<style data-inline="fonts">`.
 - `tools/build.mjs` : assemble le fichier unique → `dist/frigobilan.html` (à télécharger) et `frigobilan.html` à la racine (servi par GitHub Pages, ne pas modifier à la main).
 - `tools/smoke.mjs` : test de bout en bout Playwright (format iPhone, hors ligne) sur `dist/frigobilan.html`.
@@ -29,7 +30,7 @@ npm run test:e2e     # bout en bout (Chromium)
 ## Données
 
 `window.Store` (dans `src/frigobilan.html`) enregistre les projets dans `localStorage` (`frigobilan-store-v2`).
-Un projet a des chambres (`rooms`) ; les parties `bilan`, `room`, `brassage`, `elec` sont par chambre, les autres (`consult`, `dn`, `stations`) par projet.
+Un projet a des chambres (`rooms`) ; les parties `bilan`, `room`, `brassage`, `elec` sont par chambre, les autres (`consult`, `dn`, `gaines`, `stations`) par projet.
 L'onglet Stations (bloc `<script>` « Stations de vannes » dans `src/frigobilan.html`) lit et écrit `Store.get/set("stations")`.
 `normalize(p)` migre chaque projet au chargement et à l'import : toute évolution du format doit rester compatible avec les anciens projets et exports JSON.
 Les évaporateurs (`rooms[].brassage.evaps[]`) ont un `id` stable ; une station le référence par `evapId`.
@@ -40,6 +41,6 @@ Les évaporateurs (`rooms[].brassage.evaps[]`) ont un `id` stable ; une station 
 - Mobile d'abord (iPhone) ; fonctionne aussi à la souris.
 - Aucun CDN ni appel réseau : polices, Three.js et modules sont intégrés au fichier (vérifié par `tests/build.test.mjs`).
 - Aucun nom de client réel dans le code, les exemples ou les tests : noms de code uniquement (Projet Alpha…).
-- Ne pas modifier les formules de calcul existantes (Bilan, Brassage, Électricité, DN rapide).
+- Ne pas modifier les formules de calcul existantes (Bilan, Brassage, Électricité, DN rapide, Gaines).
 - Stations de vannes : contenu générique rédigé pour l'app ; ne pas reprendre de documents internes d'entreprise (numérotations, textes, marques).
 - Ajouter un type de station = une entrée dans `types.js` ; `tests/types.test.mjs` vérifie automatiquement toutes ses combinaisons d'options.

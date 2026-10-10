@@ -389,6 +389,18 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
 @media (max-width:1180px){.stgrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"v3" "v2" "p" "n" "np"}}
 @media (max-width:860px){.st3d{height:330px}}
 @media (max-width:600px){.sttable .act{display:none}}
+/* Gaines */
+.gares{display:flex;gap:12px;align-items:stretch;margin-bottom:12px}
+.gares .dnbig{flex:1;margin:0}
+.gasec{flex:none;width:96px;display:flex;align-items:center;justify-content:center;background:var(--field);border:1px solid var(--line);border-radius:12px}
+.gasec svg{width:84px;height:84px}
+.gasec .s{fill:rgba(0,194,255,.14);stroke:var(--cyan);stroke-width:2}
+.gasec .s.tex{stroke-dasharray:5 3;fill:rgba(203,60,255,.12);stroke:var(--accent)}
+.gasec text{fill:var(--muted);font:600 10px var(--font)}
+.dnbig .gtype{display:block;color:var(--muted);font-size:13px;font-weight:600}
+.gares .dnbig b{white-space:nowrap;font-size:clamp(30px,8.5vw,52px)}
+@media (max-width:860px){.gasec{width:76px}.gasec svg{width:64px;height:64px}.gares{gap:8px}.gares .dnbig{padding:14px 16px}}
+.dnwarns li.info{border-left-color:var(--cyan)}
 /* Téléphone : onglets en bas, bandeau des chambres collant, saisie sans zoom */
 .f .pm{display:none}
 @media (max-width:860px){
@@ -461,6 +473,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Consultation</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Électricité</button>
       <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN rapide</button>
+      <button class="tab" role="tab" data-view="gaines" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h20v10H2z"/><path d="M6 12h9M12 9l3 3-3 3"/></svg>Gaines</button>
       <button class="tab" role="tab" data-view="stations" aria-selected="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9v8l9-4zM21 9v8l-9-4z"/><path d="M12 13V6M8.5 6h7"/></svg>Stations de vannes</button>
     </div>
     <p class="navlab" id="navlab">Sections</p>
@@ -486,6 +499,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       <button class="tab" role="tab" data-view="consult" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Devis</button>
       <button class="tab" role="tab" data-view="elec" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Élec</button>
       <button class="tab" role="tab" data-view="dn" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h4v10H2M22 7h-4v10h4M6 10h12M6 14h12"/></svg>DN</button>
+      <button class="tab" role="tab" data-view="gaines" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 7h20v10H2z"/><path d="M6 12h9M12 9l3 3-3 3"/></svg>Gaines</button>
       <button class="tab" role="tab" data-view="stations" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 9v8l9-4zM21 9v8l-9-4z"/><path d="M12 13V6M8.5 6h7"/></svg>Vannes</button>
     </div>
     <div class="roombar" id="roomBar"></div>
@@ -734,6 +748,31 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
       </section>
       <div class="dngrid" id="dnLines"></div>
     </div>
+    <div id="v-gaines" hidden>
+      <div class="head">
+        <div>
+          <h1>Gaines</h1>
+          <p>Dimensionnement des gaines d'air : rectangulaires ou circulaires en galva, et gaines textiles. Pour chaque tronçon, la plus petite gaine dont la vitesse reste sous la vitesse maximale.</p>
+        </div>
+        <div class="btns">
+          <button class="b-ghost" type="button" id="gaEvap">Reprendre les évaporateurs</button>
+          <button class="b-ghost" type="button" id="gaReset">Réinitialiser</button>
+          <button class="b-main" type="button" id="gaAdd">+ Ajouter une gaine</button>
+        </div>
+      </div>
+      <section class="card">
+        <h2>Réseau d'air</h2>
+        <p class="hint">7 m/s convient aux réseaux principaux ; viser plutôt 4 à 5 m/s près des bouches ou dans les locaux occupés, pour limiter le bruit.</p>
+        <div class="row">
+          <div><label for="gaV">Vitesse maximale</label><div class="f"><input id="gaV" inputmode="decimal"><span class="u">m/s</span></div></div>
+          <div><label for="gaR">Rapport largeur / hauteur maxi</label><div class="f"><input id="gaR" inputmode="decimal"><span class="u">: 1</span></div></div>
+          <div><label for="gaT">Température de l'air</label><div class="f"><input id="gaT" inputmode="decimal"><span class="u">°C</span></div></div>
+          <div><label for="gaM">Majoration accessoires</label><div class="f"><input id="gaM" inputmode="decimal"><span class="u">%</span></div></div>
+        </div>
+      </section>
+      <div class="dngrid" id="gaLines"></div>
+      <p class="copied" id="gaMsg" aria-live="polite"></p>
+    </div>
     <div id="v-stations" hidden>
       <div class="head">
         <div>
@@ -962,6 +1001,7 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
 <div id="note"></div>
 
 <script data-inline="stations"></script>
+<script data-inline="gaines"></script>
 <script>
 /* ===== Socle commun : projets, chambre partagée, petites boîtes de dialogue ===== */
 (function(){
@@ -1417,8 +1457,9 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
     $("v-consult").hidden = v !== "consult";
     $("v-elec").hidden = v !== "elec";
     $("v-dn").hidden = v !== "dn";
+    $("v-gaines").hidden = v !== "gaines";
     $("v-stations").hidden = v !== "stations";
-    $("roomBar").hidden = v === "consult" || v === "dn" || v === "stations";
+    $("roomBar").hidden = v === "consult" || v === "dn" || v === "gaines" || v === "stations";
     try{ localStorage.setItem("frigobilan-view", v); }catch(e){}
     if(window.brassageOnShow) window.brassageOnShow(v === "brassage");
     if(window.consultOnShow) window.consultOnShow(v === "consult");
@@ -3820,6 +3861,118 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-b
   });
   renderGlobal(); renderLines();
   window.dnCalc = function(l){ return calc(l); };
+})();
+</script>
+<script>
+/* ---------- Gaines : dimensionnement des gaines d'air (calculs : window.FBGaines, src/gaines/gaines.js) ---------- */
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var G = window.FBGaines, TYPES = G.TYPES_GAINE;
+  var DEF = {vmax:"7", ratio:"4", T:"20", maj:"0", lines:[{name:"Gaine 1", type:"rect", Q:"5000", L:"", hmax:""}]};
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  var S = Store.get("gaines");
+  if(!S || !Array.isArray(S.lines) || !S.lines.length) S = clone(DEF);
+  S.lines.forEach(function(l){ if(!TYPES[l.type]) l.type = "rect"; });
+  function save(){ Store.set("gaines", S); }
+  function num(v){ var n = parseFloat(String(v == null ? "" : v).replace(",", ".").replace("−", "-")); return isFinite(n) ? n : NaN; }
+  function fr(x, d){ return x.toLocaleString("fr-FR", {minimumFractionDigits:d, maximumFractionDigits:d}); }
+  function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function glob(){ return {vmax:num(S.vmax), ratio:num(S.ratio) > 1 ? num(S.ratio) : 1, T:isFinite(num(S.T)) ? num(S.T) : 20, maj:num(S.maj) > 0 ? num(S.maj) : 0}; }
+  function calc(l){ return G.calcLigne({type:l.type, Q:num(l.Q), L:num(l.L), hmax:num(l.hmax)}, glob()); }
+
+  /* Section dessinée à l'échelle (rectangle ou cercle) */
+  function section(c){
+    if(c.type === "rect"){
+      var k = 70 / Math.max(c.g.a, c.g.b), w = c.g.a * k, h = c.g.b * k;
+      return '<svg viewBox="0 0 84 84" aria-hidden="true"><rect class="s" x="'+(42 - w/2)+'" y="'+(42 - h/2)+'" width="'+w+'" height="'+h+'" rx="2"/></svg>';
+    }
+    return '<svg viewBox="0 0 84 84" aria-hidden="true"><circle class="s'+(c.type === "textile" ? " tex" : "")+'" cx="42" cy="42" r="35"/></svg>';
+  }
+  function dims(c, g){ return c.type === "rect" ? g.a+" × "+g.b : "Ø "+g.d; }
+  function resHTML(c){
+    if(c.vide) return '<p class="dnmsg">Saisissez le débit d\'air de la gaine.</p>';
+    if(c.erreur) return '<p class="dnmsg dnwarn">'+c.erreur+'</p>';
+    var g = c.g, h = '<div class="gares"><div class="dnbig"><div><b>'+dims(c, g)+'</b><small>mm</small></div><span><span class="gtype">'+TYPES[c.type].nom+'</span>'+(c.type === "rect" ? "largeur × hauteur" : "diamètre")+'</span></div><div class="gasec">'+section(c)+'</div></div>';
+    h += '<div class="dnkv"><div><span>Vitesse</span><b'+(c.trop ? ' class="bad"' : '')+'>'+fr(g.v,2)+' m/s</b></div><div><span>Section</span><b>'+fr(g.section,3)+' m²</b></div>'+
+      (c.type === "rect" ? '<div><span>Ø équivalent</span><b>'+fr(g.de,0)+' mm</b></div>' : '')+
+      '<div><span>Pression dynamique</span><b>'+fr(g.pd,1)+' Pa</b></div>'+
+      (g.pam != null ? '<div><span>Perte de charge</span><b>'+fr(g.pam,2)+' Pa/m</b></div>' : '')+
+      (c.pdc != null ? '<div><span>Perte de charge du tronçon</span><b>'+fr(c.pdc,1)+' Pa</b></div>' : '')+
+      (c.surface != null ? '<div><span>'+(c.type === "textile" ? "Surface de tissu" : "Surface de tôle")+'</span><b>'+fr(c.surface,2)+' m²</b></div>' : '')+'</div>';
+    var vmax = glob().vmax;
+    h += '<table class="dnalt"><tr><th>'+(c.type === "rect" ? "Variantes (hauteur)" : "Diamètre")+'</th><th>Vitesse</th><th>'+(g.pam != null ? "Pdc" : "P. dyn.")+'</th></tr>'+c.alt.map(function(a){
+      var ok = a.v <= vmax + 1e-9;
+      return '<tr'+(a === g ? ' class="me"' : '')+'><td>'+dims(c, a)+'</td><td class="'+(ok ? 'ok' : 'bad')+'">'+fr(a.v,2)+' m/s</td><td>'+(a.pam != null ? fr(a.pam,2)+' Pa/m' : fr(a.pd,1)+' Pa')+'</td></tr>';
+    }).join("")+'</table>';
+    var w = [];
+    if(c.trop) w.push(["", "Même le plus grand diamètre disponible dépasse la vitesse maximale : prévoir plusieurs gaines en parallèle."]);
+    if(c.type === "textile") w.push(["info", "Gaine textile : la pression statique d'entrée et le mode de diffusion (perforations, micro-perforations) se définissent avec le fabricant."]);
+    if(c.type === "rect" && g.a / g.b > 3 + 1e-9) w.push(["", "Gaine très aplatie : plus de tôle et de pertes de charge à section égale."]);
+    if(w.length) h += '<ul class="dnwarns">'+w.map(function(x){ return '<li class="'+x[0]+'">'+x[1]+'</li>'; }).join("")+'</ul>';
+    return h;
+  }
+  function lineHTML(l, i){
+    function fld(k, lab, u, mode, hide){
+      return '<div'+(hide ? ' hidden' : '')+'><label for="ga'+k+i+'">'+lab+'</label><div class="f"><input id="ga'+k+i+'" data-k="'+k+'" inputmode="'+(mode || "decimal")+'" value="'+esc(l[k] == null ? "" : l[k])+'"><span class="u">'+u+'</span></div></div>';
+    }
+    return '<section class="card dnl" data-i="'+i+'">'+
+      '<div class="ev-h"><input class="ev-name" data-k="name" value="'+esc(l.name || "")+'" aria-label="Nom de la gaine">'+
+      (S.lines.length > 1 ? '<button type="button" class="b-ghost dnDel" aria-label="Supprimer la gaine">×</button>' : '')+'</div>'+
+      '<div class="dnres" id="gaRes'+i+'"></div>'+
+      '<div class="row"><div><label for="gatype'+i+'">Type de gaine</label><div class="f"><select id="gatype'+i+'" data-k="type">'+Object.keys(TYPES).map(function(t){ return '<option value="'+t+'"'+(t === l.type ? ' selected' : '')+'>'+TYPES[t].nom+'</option>'; }).join("")+'</select></div></div>'+
+      fld("Q","Débit d'air","m³/h","numeric")+fld("L","Longueur","ml")+fld("hmax","Hauteur maximale","mm","numeric", l.type !== "rect")+'</div>'+
+      '</section>';
+  }
+  function update(i){ var el = $("gaRes"+i); if(el) el.innerHTML = resHTML(calc(S.lines[i])); }
+  function updateAll(){ S.lines.forEach(function(l, i){ update(i); }); }
+  function renderLines(){ $("gaLines").innerHTML = S.lines.map(lineHTML).join(""); updateAll(); }
+  function renderGlobal(){ $("gaV").value = S.vmax; $("gaR").value = S.ratio; $("gaT").value = S.T; $("gaM").value = S.maj; }
+  function msg(t){ var m = $("gaMsg"); m.textContent = t; setTimeout(function(){ if(m.textContent === t) m.textContent = ""; }, 3500); }
+
+  [["gaV","vmax"],["gaR","ratio"],["gaT","T"],["gaM","maj"]].forEach(function(f){
+    $(f[0]).addEventListener("input", function(){ S[f[1]] = this.value; save(); updateAll(); });
+  });
+  $("gaLines").addEventListener("input", function(e){
+    var k = e.target.getAttribute("data-k"), card = e.target.closest(".dnl"); if(!k || !card || k === "type") return;
+    var i = +card.getAttribute("data-i"); S.lines[i][k] = e.target.value; save(); if(k !== "name") update(i);
+  });
+  $("gaLines").addEventListener("change", function(e){
+    if(e.target.getAttribute("data-k") !== "type") return;
+    var i = +e.target.closest(".dnl").getAttribute("data-i"); S.lines[i].type = e.target.value; save();
+    var h = $("gahmax"+i); if(h) h.closest("div").parentNode.hidden = e.target.value !== "rect";
+    update(i);
+  });
+  $("gaLines").addEventListener("click", function(e){
+    if(!e.target.closest(".dnDel")) return;
+    var i = +e.target.closest(".dnl").getAttribute("data-i"), n = S.lines[i].name || "cette gaine";
+    UI.confirm("Supprimer « "+n+" » ?", "Supprimer").then(function(ok){ if(!ok) return; S.lines.splice(i, 1); save(); renderLines(); });
+  });
+  $("gaAdd").addEventListener("click", function(){
+    var last = S.lines[S.lines.length - 1] || DEF.lines[0];
+    S.lines.push({name:"Gaine "+(S.lines.length + 1), type:last.type, Q:"", L:"", hmax:last.hmax || ""});
+    save(); renderLines();
+    var inp = $("gaQ"+(S.lines.length - 1)); if(inp){ inp.scrollIntoView({behavior:"smooth", block:"center"}); inp.focus({preventScroll:true}); }
+  });
+  $("gaReset").addEventListener("click", function(){
+    UI.confirm("Remettre l'onglet Gaines à zéro ? Les gaines saisies seront effacées.", "Réinitialiser").then(function(ok){ if(!ok) return; S = clone(DEF); save(); renderGlobal(); renderLines(); });
+  });
+  // Une gaine textile par évaporateur du projet (débit d'air repris de l'onglet Brassage)
+  $("gaEvap").addEventListener("click", function(){
+    var rooms = Store.rooms(), multi = rooms.length > 1, cur = Store.roomId(), live = window.getBrassage ? window.getBrassage().S.evaps : null, n = 0;
+    rooms.forEach(function(r){
+      var d = Store.roomData(r.id) || {}, evs = r.id === cur && live ? live : (d.brassage && d.brassage.evaps) || [];
+      evs.forEach(function(e){
+        var name = (multi ? r.name+" · " : "")+(e.name || "Évaporateur");
+        if(S.lines.some(function(l){ return l.name === name; }) || !(e.q > 0)) return;
+        S.lines.push({name:name, type:"textile", Q:String(Math.round(e.q)), L:"", hmax:""}); n++;
+      });
+    });
+    if(n && S.lines.length > n && !num(S.lines[0].Q)) S.lines.shift();
+    save(); renderLines();
+    msg(n ? n+" gaine"+(n > 1 ? "s" : "")+" ajoutée"+(n > 1 ? "s" : "")+" depuis les évaporateurs (type textile, modifiable)." : "Aucun nouvel évaporateur avec un débit d'air dans l'onglet Brassage.");
+  });
+  renderGlobal(); renderLines();
+  window.gaCalc = function(l, g){ return G.calcLigne(l, g); };
 })();
 </script>
 <script data-inline="stations3d"></script>

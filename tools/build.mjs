@@ -15,6 +15,7 @@ const OUTPUTS = ["dist/frigobilan.html", "frigobilan.html"];
 // lazy : code minifié rangé dans un <script type="text/plain">, exécuté à la demande par l'application
 const MODULES = [
   { marker: '<script data-inline="stations"></script>', entry: "src/stations/index.js", global: "FBStations" },
+  { marker: '<script data-inline="gaines"></script>', entry: "src/gaines/index.js", global: "FBGaines" },
   { marker: '<script data-inline="stations3d"></script>', entry: "src/stations/index3d.js", global: "FBStations3D", lazy: true }
 ];
 

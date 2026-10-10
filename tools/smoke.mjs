@@ -38,7 +38,7 @@ const font = await page.evaluate(async () => { await document.fonts.ready; retur
 check("police Mona Sans chargée sans réseau (intégrée au fichier)", font);
 check("module des stations chargé", await page.evaluate(() => typeof window.FBStations === "object" && typeof FBStations.stationRows === "function"));
 check("Bilan : puissance calculée", (await page.textContent("#P")).trim() !== "", await page.textContent("#P"));
-for (const v of ["visuel", "brassage", "consult", "elec", "dn", "bilan"]) {
+for (const v of ["visuel", "brassage", "consult", "elec", "dn", "gaines", "bilan"]) {
   await page.locator(`.mtabs .tab[data-view="${v}"]`).tap(); await page.waitForTimeout(300);
   check("onglet " + v + " affiché", await page.evaluate(v => !document.getElementById("v-" + v).hidden, v));
 }
@@ -169,6 +169,27 @@ await page.click("#stNew"); await page.waitForTimeout(300);
 await page.reload(); await page.waitForTimeout(1200);
 const after = await page.evaluate(() => ({ view: !document.getElementById("v-stations").hidden, chips: [...document.querySelectorAll("#stBar .stchip")].map(c => c.firstChild.textContent), cur: document.querySelector('#stBar [aria-selected="true"]')?.firstChild.textContent, st1: Store.get("stations")[0].dn }));
 check("Rechargement : onglet, 2 stations et réglages restitués", after.view && after.chips.join() === "ST1,ST2" && after.cur === "ST2" && after.st1 === 50, JSON.stringify(after));
+
+// 6. Onglet Gaines
+await page.locator('.mtabs .tab[data-view="gaines"]').tap(); await page.waitForTimeout(700);
+const big = async () => (await page.textContent("#gaRes0 .dnbig b")).trim();
+check("Gaines : 5 000 m³/h à 7 m/s → rectangulaire 500 × 400", await big() === "500 × 400", await big());
+await page.selectOption("#gatype0", "rond"); await page.waitForTimeout(200);
+const rond = await big(), hHidden = await page.evaluate(() => document.getElementById("gahmax0").closest(".f").parentNode.hidden);
+await page.selectOption("#gatype0", "textile"); await page.waitForTimeout(200);
+check("Gaines : circulaire galva Ø 560, textile Ø 560, hauteur maxi masquée", rond === "Ø 560" && await big() === "Ø 560" && hHidden, rond + " / " + await big());
+await page.selectOption("#gatype0", "rect"); await page.fill("#gahmax0", "250"); await page.waitForTimeout(200);
+check("Gaines : hauteur maximale 250 mm → 800 × 250", await big() === "800 × 250", await big());
+await page.fill("#gaV", "5"); await page.waitForTimeout(200);
+check("Gaines : à 5 m/s, impossible sous 250 mm avec 4:1 (message)", (await page.textContent("#gaRes0")).includes("Aucune gaine possible"));
+await page.fill("#gahmax0", ""); await page.waitForTimeout(200);
+check("Gaines : hauteur libre à 5 m/s → 700 × 400 (même tôle que 600 × 500, section plus petite)", await big() === "700 × 400", await big());
+await page.click("#gaEvap"); await page.waitForTimeout(300);
+const evLines = await page.evaluate(() => Store.get("gaines").lines.filter(l => l.type === "textile").map(l => l.Q));
+check("Gaines : reprise du débit des évaporateurs (gaine textile)", evLines.length === 1 && evLines[0] === "3000", JSON.stringify(evLines));
+await page.reload(); await page.waitForTimeout(800);
+const kept = await page.evaluate(() => ({ view: !document.getElementById("v-gaines").hidden, n: document.querySelectorAll("#gaLines .dnl").length, v: document.getElementById("gaV").value }));
+check("Gaines : saisies conservées après rechargement", kept.view && kept.n === 2 && kept.v === "5", JSON.stringify(kept));
 
 check("aucune erreur JavaScript", errors.length === 0, errors.join(" | "));
 await browser.close(); server.close();
